@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto"
+    class="mx-auto text-center"
     width="400"
   >
     <v-card-title class="text-h5">新規登録</v-card-title>
@@ -9,15 +9,18 @@
         <v-text-field
           label="ユーザーネーム"
           v-model="username"
+          required
         ></v-text-field>
         <v-text-field
           label="メールアドレス"
           v-model="email"
+          required
         ></v-text-field>
         <v-text-field
           label="パスワード"
           type="password"
           v-model="password"
+          required
         ></v-text-field>
         <v-btn
           color="primary"
@@ -29,7 +32,7 @@
         </v-btn>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions class="d-flex justify-center">
       <p class="sign_up_link">ログインしますか？<br>
         <router-link to="/auth/login">ログインはこちら</router-link>
       </p>
