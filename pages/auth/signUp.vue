@@ -9,15 +9,18 @@
         <v-text-field
           label="ユーザーネーム"
           v-model="username"
+          required
         ></v-text-field>
         <v-text-field
           label="メールアドレス"
           v-model="email"
+          required
         ></v-text-field>
         <v-text-field
           label="パスワード"
           type="password"
           v-model="password"
+          required
         ></v-text-field>
         <v-btn
           color="primary"
