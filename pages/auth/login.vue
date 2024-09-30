@@ -27,7 +27,7 @@
         </v-btn>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions class="d-flex justify-center">
       <p class="sign_up_link">アカウントを作成しますか？<br>
         <router-link to="/auth/signUp">登録はこちら</router-link>
       </p>
@@ -51,8 +51,4 @@ const _login = async () => {
 </script>
 
 <style scoped>
-.v-card-actions {
-  display: flex;
-  justify-content: center;
-}
 </style>
