@@ -55,7 +55,6 @@ export const useUser = () => {
   return {
     signUp,
     fetchUsers,
-    users,
-    error
+    users
   };
 };

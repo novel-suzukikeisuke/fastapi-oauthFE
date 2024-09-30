@@ -37,7 +37,7 @@
 import { onMounted } from 'vue'
 import { useUser } from '~/composables/useUser';
 
-const { users, error, fetchUsers } = useUser(); // useUserフックからデータを取得
+const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
 // ページがマウントされたらユーザー情報を取得
 onMounted(fetchUsers);
