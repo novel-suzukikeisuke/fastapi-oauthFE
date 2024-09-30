@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 import { useUser } from '~/composables/useUser';
 
 // user プロップを受け取る
