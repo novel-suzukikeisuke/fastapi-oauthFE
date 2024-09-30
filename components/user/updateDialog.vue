@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, defineEmits, ref } from 'vue';
 import { useUser } from '~/composables/useUser';
 
 // user プロップを受け取る
@@ -65,6 +65,8 @@ const props = defineProps<{
     role: string;
   };
 }>();
+
+const emit = defineEmits(['userUpdated']);
 
 // フォームのバリデーション状態
 const username = ref(props.user.username);
@@ -79,6 +81,7 @@ const _updateUser = async () => {
   const success = await updateUser(props.user.id, username.value, email.value, password.value, role.value);
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
+    emit('userUpdated'); // 更新成功時にイベントを発火
   }
 };
 

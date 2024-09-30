@@ -27,7 +27,7 @@
               <strong>役割:</strong> {{ user.role }}
             </div>
           </v-card-text>
-          <updateDialog :user="user"/>
+          <updateDialog :user="user" @userUpdated="fetchUsers"/>
         </v-card>
       </v-col>
     </v-row>
