@@ -31,7 +31,7 @@ export const useAuth = () => {
 
   const logOut = async () => {
     authStore.logout();
-    navigateTo('/');
+    navigateTo('/auth/login');
   };
 
   return {
