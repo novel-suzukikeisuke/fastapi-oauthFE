@@ -52,9 +52,38 @@ export const useUser = () => {
     }
   };
 
+  const updateUser = async (userId: number, username: string, email: string, password: string, role: string) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/user/update?user_id=${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+          role: role
+        })
+      })
+      const data: UserResponse = await response.json()
+      if (response.ok) {
+        return true;
+      } else  {
+        alert(data.error)
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
   return {
     signUp,
     fetchUsers,
+    updateUser,
     users
   };
 };
