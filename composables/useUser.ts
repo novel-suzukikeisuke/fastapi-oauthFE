@@ -23,7 +23,7 @@ export const useUser = () => {
       })
       const data: UserResponse = await response.json()
       if (response.ok) {
-        navigateTo('/auth/login')
+        navigateTo('/')
       } else  {
         alert(data.error)
       }

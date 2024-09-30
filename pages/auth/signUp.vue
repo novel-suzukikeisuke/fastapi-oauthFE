@@ -34,7 +34,7 @@
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
       <p class="sign_up_link">ログインしますか？<br>
-        <router-link to="/auth/login">ログインはこちら</router-link>
+        <router-link to="/">ログインはこちら</router-link>
       </p>
     </v-card-actions>
   </v-card>
