@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto"
+    class="mx-auto text-center"
     width="400"
   >
     <v-card-title class="text-h5">ログイン</v-card-title>
@@ -51,4 +51,8 @@ const _login = async () => {
 </script>
 
 <style scoped>
+.v-card-actions {
+  display: flex;
+  justify-content: center;
+}
 </style>
