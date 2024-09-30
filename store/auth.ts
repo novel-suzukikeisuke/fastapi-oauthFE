@@ -11,5 +11,11 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('jwtToken', token);
       }
     },
+    logout() {
+      this.token = null;
+      if (import.meta.client) {
+        localStorage.removeItem('jwtToken');
+      }
+    },
   },
 });
