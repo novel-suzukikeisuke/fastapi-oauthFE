@@ -27,6 +27,7 @@
               <strong>役割:</strong> {{ user.role }}
             </div>
           </v-card-text>
+          <updateDialog :user="user"/>
         </v-card>
       </v-col>
     </v-row>
@@ -36,6 +37,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useUser } from '~/composables/useUser';
+import updateDialog from '~/components/user/updateDialog.vue';
 
 const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
