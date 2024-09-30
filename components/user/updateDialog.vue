@@ -10,23 +10,27 @@
   </template>
 
   <template v-slot:default="{ isActive }">
-    <v-card title="ユーザー編集">
+    <v-card>
+      <v-card-title class="text-h5">ユーザー編集</v-card-title>
       <v-card-item>
         <v-form>
           <v-text-field
             v-model="username"
             label="ユーザー名"
             hide-details
+            class="mb-1"
           ></v-text-field>
           <v-text-field
             v-model="email"
             label="メールアドレス"
             hide-details
+            class="mb-1"
           ></v-text-field>
           <v-text-field
             v-model="password"
             label="パスワード"
             hide-details
+            class="mb-1"
           ></v-text-field>
           <v-select
             v-model="role"
