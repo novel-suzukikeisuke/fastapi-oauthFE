@@ -29,7 +29,13 @@ export const useAuth = () => {
     }
   }
 
+  const logOut = async () => {
+    authStore.logout();
+    navigateTo('/auth/login');
+  };
+
   return {
-    login
+    login,
+    logOut
   };
 };
