@@ -73,11 +73,11 @@ const props = defineProps<{
 const emit = defineEmits(['userUpdated']);
 
 // フォームのバリデーション状態
-const username = ref(props.user.username);
-const email = ref(props.user.email);
-const password = ref('');
-const role = ref(props.user.role)
-const isActive = ref(false); // モーダルのアクティブ状態を管理
+const username = ref<string>(props.user.username);
+const email = ref<string>(props.user.email);
+const password = ref<string>('');
+const role = ref<string>(props.user.role)
+const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 
 const { updateUser } = useUser();
 
