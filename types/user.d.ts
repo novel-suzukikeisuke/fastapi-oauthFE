@@ -1,4 +1,4 @@
-export type AuthResponse = {
+export type UserResponse = {
   id: Int;
   username: string;
   email: string;
