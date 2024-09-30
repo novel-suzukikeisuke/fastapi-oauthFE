@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/store/auth';
 import { apiBaseUrl } from '~/config';
-import type { AuthResponse } from '~/types/auth';
+import type { AuthResponse } from '~/types/login';
 
 export const useAuth = () => {
   const authStore = useAuthStore();
