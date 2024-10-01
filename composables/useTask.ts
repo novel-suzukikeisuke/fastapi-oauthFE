@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
 import type { TaskResponse } from '~/types/task';
+import type { TagResponse } from '~/types/tag';
 import { useAuthStore } from '~/store/auth';
 
 export const useTask = () => {
@@ -27,8 +28,37 @@ export const useTask = () => {
     }
   };
 
+  const updateTask = async (taskId: number, title: string, description: string, completed: boolean, tags: number[]) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          completed: completed,
+          tags: tags
+        })
+      })
+      const data: TaskResponse = await response.json()
+      if (response.ok) {
+        return true;
+      } else  {
+        alert(data.error)
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
   return {
     fetchTasks,
+    updateTask,
     tasks
   };
 };
