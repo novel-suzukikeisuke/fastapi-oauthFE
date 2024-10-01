@@ -16,19 +16,19 @@
         <v-form v-model="valid">
           <v-text-field
             v-model="username"
-            :rules="nameRules"
+            :rules="[nameRules]"
             :counter="20"
             label="ユーザー名"
           ></v-text-field>
           <v-text-field
             v-model="email"
-            :rules="emailRules"
+            :rules="[emailRules]"
             :counter="50"
             label="メールアドレス"
           ></v-text-field>
           <v-text-field
             v-model="password"
-            :rules="passwordRules"
+            :rules="[passwordRules]"
             :counter="10"
             label="パスワード"
           ></v-text-field>
