@@ -86,15 +86,9 @@ const valid = ref<boolean>(false); // フォームのバリデーション結果
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const nameRules = [
-  (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります',
-];
-const emailRules = [
-  (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります',
-];
-const passwordRules = [
-  (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります',
-];
+const nameRules = (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります';
+const emailRules = (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります';
+const passwordRules = (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります';
 
 const _updateUser = async () => {
   const success = await updateUser(props.user.id, username.value, email.value, password.value, role.value);
