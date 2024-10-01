@@ -23,7 +23,7 @@ export const useUser = () => {
       })
       const data: UserResponse = await response.json()
       if (response.ok) {
-        navigateTo('/auth/login')
+        navigateTo('/')
       } else  {
         alert(data.error)
       }
@@ -80,10 +80,37 @@ export const useUser = () => {
     }
   }
 
+  const deleteUser = async (userId: number, disabled: boolean) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/users/disabled?user_id=${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          disabled: disabled
+        })
+      })
+      const data: UserResponse = await response.json()
+      if (response.ok) {
+        return true;
+      } else  {
+        alert(data.error)
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+      return false;
+    }
+  }
+
   return {
     signUp,
     fetchUsers,
     updateUser,
+    deleteUser,
     users
   };
 };
