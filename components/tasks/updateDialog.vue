@@ -72,7 +72,6 @@ import type { TagResponse } from '~/types/tag';
 
 const { updateTask } = useTask();
 
-// user プロップを受け取る
 const props = defineProps<{
   task: {
     id: number;
