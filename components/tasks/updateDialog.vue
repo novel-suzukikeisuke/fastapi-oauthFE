@@ -88,7 +88,7 @@ const emit = defineEmits(['taskUpdated']);
 const title = ref<string>(props.task.title);
 const description = ref<string>(props.task.description);
 const completed = ref<boolean>(props.task.completed);
-const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // タグIDの配列
+const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // props.task.tagsの配列から各tagのidプロパティを取得し、それを新しい配列としてtagsに格納
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 const tagsItems = ref<TagResponse[]>([]);// タグのリストを格納するためのref
@@ -102,6 +102,7 @@ const { fetchTags, tags: fetchedTags } = useTag();
 const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります';
 const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります';
 
+//tagsItemsから選択されたタグオブジェクトがselectedTags
 const updateSelectedTags = (selectedTags: TagResponse[]) => {
   tags.value = selectedTags.map(tag => tag.id);; // 選択されたタグのオブジェクトをセット
 };
