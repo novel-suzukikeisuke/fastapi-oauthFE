@@ -14,7 +14,7 @@
         <v-card-title class="text-h5">確認</v-card-title>
         <v-card-item>
           <v-card-text>
-            本当にユーザー「{{ props.user.username }}」を削除しますか？
+            本当にユーザー「{{ props.user.username }}」を利用停止にしますか？
           </v-card-text>
         </v-card-item>
         <v-card-actions>
