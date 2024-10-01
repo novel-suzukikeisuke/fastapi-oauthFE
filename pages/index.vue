@@ -29,7 +29,7 @@
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
       <p class="sign_up_link">アカウントを作成しますか？<br>
-        <router-link to="/auth/signUp">登録はこちら</router-link>
+        <router-link to="/signUp">登録はこちら</router-link>
       </p>
     </v-card-actions>
   </v-card>

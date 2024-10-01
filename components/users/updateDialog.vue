@@ -73,7 +73,7 @@ const props = defineProps<{
   };
 }>();
 
-const emit = defineEmits(['userUpdated']);
+const emit = defineEmits(['userFetch']);
 
 const username = ref<string>(props.user.username);
 const email = ref<string>(props.user.email);
@@ -94,7 +94,7 @@ const _updateUser = async () => {
   const success = await updateUser(props.user.id, username.value, email.value, password.value, role.value);
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
-    emit('userUpdated'); // 更新成功時にイベントを発火
+    emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
 
