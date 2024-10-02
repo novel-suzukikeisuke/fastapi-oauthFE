@@ -7,7 +7,7 @@
         :key="task.id"
         cols="4"
       >
-        <v-card>
+        <v-card class="card">
           <v-card-title>
             <span>{{ task.title }}</span>
           </v-card-title>
@@ -15,11 +15,35 @@
             {{ task.description }}
           </v-card-subtitle>
           <v-card-text>
-            <div>
-              <span>完了状態 : {{task.completed ? '完了' : '未完了'}}</span>
+            <div class="mb-1">
+              <span>完了状態:</span>
+              <v-chip
+                v-if="task.completed === TaskCompleted.NOT_STARTED"
+                color="orange"
+                size="small"
+                class="ma-1"
+              >
+                未対応
+              </v-chip>
+              <v-chip
+                v-else-if="task.completed === TaskCompleted.IN_PROGRESS"
+                color="blue"
+                size="small"
+                class="ma-1"
+              >
+                処理中
+              </v-chip>
+              <v-chip
+                v-else-if="task.completed === TaskCompleted.COMPLETED"
+                color="green"
+                size="small"
+                class="ma-1"
+              >
+                完了
+              </v-chip>
             </div>
-            <span>関連タグ:</span>
-            <v-chip
+            <div>関連タグ:</div>
+              <v-chip
                 v-for="tag in task.tags"
                 :key="tag.id"
                 class="ma-1"
@@ -44,6 +68,7 @@ import { onMounted } from 'vue'
 import { useTask } from '~/composables/useTask';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
+import { TaskCompleted } from '~/constants/taskCompleted';
 
 const { tasks, fetchTasks} = useTask();
 
