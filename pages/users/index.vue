@@ -30,7 +30,7 @@
           <v-card-actions>
             <v-spacer />
             <updateDialog :user="user" @userFetch="fetchUsers" />
-            <deleteDialog :user="user" @userFetch="fetchUsers" />
+            <disabledDialog :user="user" @userFetch="fetchUsers" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -42,7 +42,7 @@
 import { onMounted } from 'vue'
 import { useUser } from '~/composables/useUser';
 import updateDialog from '~/components/users/updateDialog.vue';
-import deleteDialog from '~/components/users/deleteDialog.vue';
+import disabledDialog from '~/components/users/disabledDialog.vue';
 
 const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
