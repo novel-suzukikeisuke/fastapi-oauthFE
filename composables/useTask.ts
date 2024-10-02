@@ -8,6 +8,33 @@ export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);
   const authStore = useAuthStore();
 
+  const createTask = async (title: string, description: string, tags: number[]) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/task_create`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          tags: tags
+        })
+      })
+      const data: TaskResponse = await response.json()
+      if (response.ok) {
+        return true;
+      } else  {
+        alert(data.error)
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
   const fetchTasks = async () => {
     authStore.loadToken();
     try {
@@ -79,6 +106,7 @@ export const useTask = () => {
   }
 
   return {
+    createTask,
     fetchTasks,
     updateTask,
     deleteTask,
