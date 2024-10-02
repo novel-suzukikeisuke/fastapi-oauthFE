@@ -82,7 +82,7 @@ const props = defineProps<{
   };
 }>();
 
-const emit = defineEmits(['taskUpdated']);
+const emit = defineEmits(['taskFetch']);
 
 const title = ref<string>(props.task.title);
 const description = ref<string>(props.task.description);
@@ -110,7 +110,7 @@ const _updateTask = async () => {
   const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value); // IDの配列を送信
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
-    emit('taskUpdated'); // 更新成功時にイベントを発火
+    emit('taskFetch'); // 更新成功時にイベントを発火
   }
 };
 

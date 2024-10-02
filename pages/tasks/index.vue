@@ -16,7 +16,7 @@
           </v-card-subtitle>
           <v-card-text>
             <div>
-              <span>完了状態 : {{task.completed}}</span>
+              <span>完了状態 : {{task.completed ? '完了' : '未完了'}}</span>
             </div>
             <span>関連タグ:</span>
             <v-chip
@@ -30,7 +30,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <updateDialog :task="task" @taskUpdated="fetchTasks" />
+            <updateDialog :task="task" @taskFetch="fetchTasks" />
             <deleteDialog :task="task" @taskFetch="fetchTasks" />
           </v-card-actions>
         </v-card>

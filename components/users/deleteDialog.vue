@@ -50,7 +50,7 @@ const props = defineProps<{
   };
 }>();
 
-const emit = defineEmits(['userUpdated']);
+const emit = defineEmits(['userFetch']);
 
 // フォームのバリデーション状態
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
@@ -59,7 +59,7 @@ const _deleteUser = async () => {
   const success = await deleteUser(props.user.id, true);
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
-    emit('userUpdated'); // 更新成功時にイベントを発火
+    emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
 </script>

@@ -29,8 +29,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <updateDialog :user="user" @userUpdated="fetchUsers" />
-            <deleteDialog :user="user" @userUpdated="fetchUsers" />
+            <updateDialog :user="user" @userFetch="fetchUsers" />
+            <deleteDialog :user="user" @userFetch="fetchUsers" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -41,8 +41,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useUser } from '~/composables/useUser';
-import updateDialog from '~/components/user/updateDialog.vue';
-import deleteDialog from '~/components/user/deleteDialog.vue';
+import updateDialog from '~/components/users/updateDialog.vue';
+import deleteDialog from '~/components/users/deleteDialog.vue';
 
 const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
