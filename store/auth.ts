@@ -17,5 +17,11 @@ export const useAuthStore = defineStore('auth', {
         localStorage.removeItem('jwtToken');
       }
     },
+    async loadToken() {
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        this.token = token;
+      }
+    },
   },
 });
