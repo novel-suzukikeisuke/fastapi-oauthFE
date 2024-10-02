@@ -12,7 +12,7 @@
 
   <template v-slot:default="{ isActive }">
     <v-card>
-      <v-card-title class="text-h5">タスク登録</v-card-title>
+      <v-card-title class="text-h5">タスク追加</v-card-title>
       <v-card-item>
         <v-form v-model="valid">
           <v-text-field
@@ -41,7 +41,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          text="登録"
+          text="保存"
           @click="_createTask"
           :disabled="!valid"
         ></v-btn>
