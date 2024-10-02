@@ -89,6 +89,9 @@ const updateSelectedTags = (selectedTags: TagResponse[]) => {
 const _createTask = async () => {
   const success = await createTask(title.value, description.value, tags.value); // IDの配列を送信
   if (success) {
+    title.value = '';
+    description.value = '';
+    tags.value = [];
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
     emit('taskFetch'); // 更新成功時にイベントを発火
   }
