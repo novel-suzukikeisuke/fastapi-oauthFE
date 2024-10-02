@@ -21,13 +21,17 @@
             <span>関連タグ:</span>
             <v-chip
                 v-for="tag in task.tags"
-                :key="tag"
+                :key="tag.id"
                 class="ma-1"
               >
                 <v-icon icon="mdi-label" start></v-icon>
-                {{ tag }}
+                {{ tag.name }}
               </v-chip>
           </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <updateDialog :task="task" @taskUpdated="fetchTasks" />
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -37,6 +41,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useTask } from '~/composables/useTask';
+import updateDialog from '~/components/tasks/updateDialog.vue';
 
 const { tasks, fetchTasks} = useTask();
 
