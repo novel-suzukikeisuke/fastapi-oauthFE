@@ -56,9 +56,32 @@ export const useTask = () => {
     }
   }
 
+  const deleteTask = async (taskId: number) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tasks/delete?task_id=${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.ok) {
+        return true;
+      } else  {
+        const errorData = await response.json(); // エラーデータを取得
+        alert(errorData.detail);
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
   return {
     fetchTasks,
     updateTask,
+    deleteTask,
     tasks
   };
 };
