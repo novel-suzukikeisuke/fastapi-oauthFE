@@ -45,7 +45,7 @@ const props = defineProps<{
     id: number;
     title: string;
     description: string;
-    completed: boolean;
+    completed: number;
     tags: TagResponse[];
   };
 }>();
