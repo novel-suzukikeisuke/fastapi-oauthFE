@@ -31,6 +31,7 @@
           <v-card-actions>
             <v-spacer />
             <updateDialog :task="task" @taskUpdated="fetchTasks" />
+            <deleteDialog :task="task" @taskFetch="fetchTasks" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -42,6 +43,7 @@
 import { onMounted } from 'vue'
 import { useTask } from '~/composables/useTask';
 import updateDialog from '~/components/tasks/updateDialog.vue';
+import deleteDialog from '~/components/tasks/deleteDialog.vue';
 
 const { tasks, fetchTasks} = useTask();
 
