@@ -21,7 +21,7 @@
           <v-spacer></v-spacer>
           <v-btn
             :text="props.user.disabled ? '再開' : '利用停止'"
-            @click="_updateUserStatus"
+            @click="_updateUserDisabled"
           ></v-btn>
           <v-btn
             text="キャンセル"
@@ -37,7 +37,7 @@
 import { ref } from 'vue';
 import { useUser } from '~/composables/useUser';
 
-const { updateUserStatus } = useUser();
+const { updateUserDisabled } = useUser();
 
 // user プロップを受け取る
 const props = defineProps<{
@@ -55,8 +55,8 @@ const emit = defineEmits(['userFetch']);
 // フォームのバリデーション状態
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 
-const _updateUserStatus = async () => {
-  const success = await updateUserStatus(props.user.id, !props.user.disabled);
+const _updateUserDisabled = async () => {
+  const success = await updateUserDisabled(props.user.id, !props.user.disabled);
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
     emit('userFetch'); // 更新成功時にイベントを発火

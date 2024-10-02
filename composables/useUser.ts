@@ -80,7 +80,7 @@ export const useUser = () => {
     }
   }
 
-  const updateUserStatus = async (userId: number, disabled: boolean) => {
+  const updateUserDisabled = async (userId: number, disabled: boolean) => {
     authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/users/disabled?user_id=${userId}`, {
@@ -110,7 +110,7 @@ export const useUser = () => {
     signUp,
     fetchUsers,
     updateUser,
-    updateUserStatus,
+    updateUserDisabled,
     users
   };
 };
