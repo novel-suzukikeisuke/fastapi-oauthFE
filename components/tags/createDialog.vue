@@ -73,8 +73,6 @@ const nameRules = [
   (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります'  // 文字数制限
 ]
 
-
-
 const _createTag = async () => {
   const success = await createTag(name.value, color.value);
   if (success) {
