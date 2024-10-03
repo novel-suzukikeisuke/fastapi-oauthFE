@@ -53,9 +53,59 @@ export const useTag = () => {
     }
   };
 
+  const updateTag = async (tagId: number, name: string, color: number) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tags/update?tag_id=${tagId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          color: color
+        })
+      })
+      const data: TagResponse = await response.json()
+      if (response.ok) {
+        return true;
+      } else  {
+        alert(data.detail)
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
+  const deleteTag = async (tagId: number) => {
+    authStore.loadToken();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tags/delete?tag_id=${tagId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.ok) {
+        return true;
+      } else  {
+        const errorData = await response.json(); // エラーデータを取得
+        alert(errorData.detail);
+        return false;
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
+
   return {
     createTag,
     fetchTags,
+    updateTag,
+    deleteTag,
     tags
   };
 };
