@@ -28,7 +28,7 @@ export const useTask = () => {
     }
   };
 
-  const updateTask = async (taskId: number, title: string, description: string, completed: boolean, tags: number[]) => {
+  const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
     authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {

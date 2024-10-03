@@ -32,8 +32,9 @@
             item-title="title"
             item-value="value"
             :items="[
-                { title: '完了', value: true },
-                { title: '未完了', value: false }
+                { title: '未対応', value: TaskCompleted.NOT_STARTED },
+                { title: '処理中', value: TaskCompleted.IN_PROGRESS },
+                { title: '完了', value: TaskCompleted.COMPLETED }
               ]"
           ></v-select>
           <v-select
@@ -69,6 +70,7 @@ import { ref } from 'vue';
 import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
 import type { TagResponse } from '~/types/tag';
+import { TaskCompleted } from '~/constants/taskCompleted';
 
 const { updateTask } = useTask();
 
@@ -77,7 +79,7 @@ const props = defineProps<{
     id: number;
     title: string;
     description: string;
-    completed: boolean;
+    completed: number;
     tags: TagResponse[];
   };
 }>();
@@ -86,7 +88,7 @@ const emit = defineEmits(['taskFetch']);
 
 const title = ref<string>(props.task.title);
 const description = ref<string>(props.task.description);
-const completed = ref<boolean>(props.task.completed);
+const completed = ref<number>(props.task.completed);
 const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // props.task.tagsの配列から各tagのidプロパティを取得し、それを新しい配列としてtagsに格納
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
