@@ -6,6 +6,7 @@
       color="surface-variant"
       text="タグ追加"
       variant="flat"
+      size="large"
     ></v-btn>
   </template>
 
