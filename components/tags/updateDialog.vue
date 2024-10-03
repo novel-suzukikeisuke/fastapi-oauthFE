@@ -77,7 +77,7 @@ const valid = ref<boolean>(false); // フォームのバリデーション結果
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const nameRules = (v: string) => v.length <= 10 || 'タグ名は20文字以内である必要があります';
+const nameRules = (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります';
 
 const _updateTag = async () => {
   const success = await updateTag(props.tag.id, name.value, color.value);
