@@ -6,6 +6,7 @@
         color="surface-variant"
         text="編集"
         variant="flat"
+        class="mx-2"
       ></v-btn>
     </template>
 
