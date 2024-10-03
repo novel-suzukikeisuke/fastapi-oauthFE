@@ -7,14 +7,14 @@
         :key="task.id"
         cols="4"
       >
-        <v-card class="card">
+        <v-card>
           <v-card-title>
             <span>{{ task.title }}</span>
           </v-card-title>
           <v-card-subtitle>
             {{ task.description }}
           </v-card-subtitle>
-          <v-card-text>
+          <v-card-text class="card-text">
             <div class="mb-1">
               <span>完了状態:</span>
               <v-chip
@@ -76,4 +76,8 @@ onMounted(fetchTasks);
 </script>
 
 <style scoped>
+.card-text {
+  height: 150px;
+  overflow-y: auto;
+}
 </style>
