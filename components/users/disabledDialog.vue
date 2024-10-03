@@ -4,7 +4,7 @@
       <v-btn
         v-bind="activatorProps"
         color="surface-variant"
-        text="利用停止"
+        :text="props.user.disabled ? '再開' : '利用停止'"
         variant="flat"
       ></v-btn>
     </template>
@@ -14,14 +14,14 @@
         <v-card-title class="text-h5">確認</v-card-title>
         <v-card-item>
           <v-card-text>
-            本当にユーザー「{{ props.user.username }}」を利用停止にしますか？
+            本当にユーザー「{{ props.user.username }}」を{{ props.user.disabled ? '再開' : '利用停止' }}にしますか？
           </v-card-text>
         </v-card-item>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            text="利用停止"
-            @click="_deleteUser"
+            :text="props.user.disabled ? '再開' : '利用停止'"
+            @click="_updateUserDisabled"
           ></v-btn>
           <v-btn
             text="キャンセル"
@@ -37,7 +37,7 @@
 import { ref } from 'vue';
 import { useUser } from '~/composables/useUser';
 
-const { deleteUser } = useUser();
+const { updateUserDisabled } = useUser();
 
 // user プロップを受け取る
 const props = defineProps<{
@@ -46,7 +46,7 @@ const props = defineProps<{
     username: string;
     email: string;
     disabled: boolean;
-    role: string;
+    role: number;
   };
 }>();
 
@@ -55,8 +55,8 @@ const emit = defineEmits(['userFetch']);
 // フォームのバリデーション状態
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 
-const _deleteUser = async () => {
-  const success = await deleteUser(props.user.id, true);
+const _updateUserDisabled = async () => {
+  const success = await updateUserDisabled(props.user.id, !props.user.disabled);
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
     emit('userFetch'); // 更新成功時にイベントを発火

@@ -24,13 +24,15 @@
               <strong>ステータス:</strong> <span>{{ user.disabled ? '無効' : '有効' }}</span>
             </div>
             <div>
-              <strong>役割:</strong> {{ user.role }}
+              <strong>役割:</strong>
+              <span v-if="user.role === UserRole.ADMIN">管理者</span>
+              <span v-else-if="user.role === UserRole.USER">ユーザー</span>
             </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
             <updateDialog :user="user" @userFetch="fetchUsers" />
-            <deleteDialog :user="user" @userFetch="fetchUsers" />
+            <disabledDialog :user="user" @userFetch="fetchUsers" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -42,7 +44,8 @@
 import { onMounted } from 'vue'
 import { useUser } from '~/composables/useUser';
 import updateDialog from '~/components/users/updateDialog.vue';
-import deleteDialog from '~/components/users/deleteDialog.vue';
+import disabledDialog from '~/components/users/disabledDialog.vue';
+import { UserRole } from '~/constants/userRole';
 
 const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
