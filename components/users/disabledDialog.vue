@@ -46,7 +46,7 @@ const props = defineProps<{
     username: string;
     email: string;
     disabled: boolean;
-    role: string;
+    role: number;
   };
 }>();
 
