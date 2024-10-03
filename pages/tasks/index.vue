@@ -1,20 +1,23 @@
 <template>
   <v-container>
-    <h1 class="mb-5">タスク一覧</h1>
     <v-row>
+      <v-col cols="12" class="d-flex justify-space-between align-center">
+        <h1>タスク一覧</h1>
+        <createDialog @taskFetch="fetchTasks" />
+      </v-col>
       <v-col
         v-for="task in tasks"
         :key="task.id"
         cols="4"
       >
-        <v-card class="card">
+        <v-card>
           <v-card-title>
             <span>{{ task.title }}</span>
           </v-card-title>
           <v-card-subtitle>
             {{ task.description }}
           </v-card-subtitle>
-          <v-card-text>
+          <v-card-text class="card-text">
             <div class="mb-1">
               <span>完了状態:</span>
               <v-chip
@@ -66,6 +69,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useTask } from '~/composables/useTask';
+import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
@@ -76,4 +80,8 @@ onMounted(fetchTasks);
 </script>
 
 <style scoped>
+.card-text {
+  height: 150px;
+  overflow-y: auto;
+}
 </style>
