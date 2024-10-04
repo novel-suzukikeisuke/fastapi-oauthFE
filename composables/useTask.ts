@@ -1,39 +1,15 @@
 import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
 import type { TaskResponse } from '~/types/task';
+import type { TagResponse } from '~/types/tag';
 import { useAuthStore } from '~/store/auth';
 
 export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);
   const authStore = useAuthStore();
 
-  const createTask = async (title: string, description: string, tags: number[]) => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/task_create`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          tags: tags
-        })
-      })
-      const data: TaskResponse = await response.json()
-      if (response.ok) {
-        return true;
-      } else  {
-        alert(data.error)
-        return false;
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
-    }
-  }
-
   const fetchTasks = async () => {
+    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks`, {
         headers: {
@@ -53,6 +29,7 @@ export const useTask = () => {
   };
 
   const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
+    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
         method: 'PUT',
@@ -80,6 +57,7 @@ export const useTask = () => {
   }
 
   const deleteTask = async (taskId: number) => {
+    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks/delete?task_id=${taskId}`, {
         method: 'DELETE',
@@ -101,7 +79,6 @@ export const useTask = () => {
   }
 
   return {
-    createTask,
     fetchTasks,
     updateTask,
     deleteTask,
