@@ -4,7 +4,7 @@
       style="height: 100%;"
     >
       <v-col>
-        <Header :user="user"/>
+        <Header v-if="user" :user="user"/>
         <main class="main">
           <slot />
         </main>
