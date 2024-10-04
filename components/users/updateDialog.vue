@@ -4,7 +4,7 @@
     <v-btn
       v-bind="activatorProps"
       color="surface-variant"
-      text="ユーザー情報編集"
+      text="編集"
       variant="flat"
     ></v-btn>
   </template>
@@ -33,7 +33,6 @@
             label="パスワード"
           ></v-text-field>
           <v-select
-            v-if="props.user.role === UserRole.ADMIN"
             v-model="role"
             label="役割"
             item-title="title"
@@ -104,7 +103,6 @@ const _updateUser = async () => {
     emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
-
 </script>
 
 <style scoped>
