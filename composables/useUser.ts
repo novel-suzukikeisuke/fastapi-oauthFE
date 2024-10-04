@@ -4,6 +4,7 @@ import { useAuthStore } from '~/store/auth';
 import type { UserResponse } from '~/types/user';
 
 export const useUser = () => {
+  const user = ref<UserResponse>();
   const users = ref<UserResponse[]>([]); // ユーザーリストを格納するref
   const error = ref<string | null>(null); // エラーを格納するref
   const authStore = useAuthStore();
@@ -40,8 +41,8 @@ export const useUser = () => {
         },
       });
       if (response.ok) {
-        const userData: UserResponse = await response.json();
-        return userData;
+        user.value = await response.json();
+        return user.value;
       } else {
         console.error('Failed to fetch user:', response.statusText);
         return null;
@@ -129,6 +130,7 @@ export const useUser = () => {
     fetchUsers,
     updateUser,
     updateUserDisabled,
-    users
+    users,
+    user
   };
 };
