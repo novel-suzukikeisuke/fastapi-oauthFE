@@ -4,5 +4,5 @@ export type UserResponse = {
   email: string;
   disabled: boolean;
   role: number;
-  error?: string;
+  detail?: string;
 };

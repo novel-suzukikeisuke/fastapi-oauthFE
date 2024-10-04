@@ -46,14 +46,20 @@
               </v-chip>
             </div>
             <div>関連タグ:</div>
-              <v-chip
-                v-for="tag in task.tags"
-                :key="tag.id"
-                class="ma-1"
-              >
-                <v-icon icon="mdi-label" start></v-icon>
-                {{ tag.name }}
-              </v-chip>
+            <v-chip
+              v-for="tag in task.tags"
+              :key="tag.id"
+              :color="
+                tag.color === TagColor.RED ? 'red' :
+                tag.color === TagColor.BLUE ? 'blue' :
+                tag.color === TagColor.YELLOW ? 'yellow' :
+                'default'
+              "
+              class="ma-1"
+            >
+              <v-icon icon="mdi-label" start></v-icon>
+              {{ tag.name }}
+            </v-chip>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
@@ -73,6 +79,7 @@ import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
+import { TagColor } from '~/constants/tagColor';
 
 const { tasks, fetchTasks} = useTask();
 
