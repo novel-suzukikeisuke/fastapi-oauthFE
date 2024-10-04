@@ -8,7 +8,6 @@ export const useTag = () => {
   const authStore = useAuthStore();
 
   const createTag = async (name: string, color: number) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tags/create`, {
         method: 'POST',
@@ -34,7 +33,6 @@ export const useTag = () => {
   }
 
   const fetchTags = async () => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tags`, {
         headers: {
@@ -54,7 +52,6 @@ export const useTag = () => {
   };
 
   const updateTag = async (tagId: number, name: string, color: number) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tags/update?tag_id=${tagId}`, {
         method: 'PUT',
@@ -80,7 +77,6 @@ export const useTag = () => {
   }
 
   const deleteTag = async (tagId: number) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tags/delete?tag_id=${tagId}`, {
         method: 'DELETE',

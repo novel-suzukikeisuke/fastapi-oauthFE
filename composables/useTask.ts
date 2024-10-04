@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
 import type { TaskResponse } from '~/types/task';
-import type { TagResponse } from '~/types/tag';
 import { useAuthStore } from '~/store/auth';
 
 export const useTask = () => {
@@ -9,7 +8,6 @@ export const useTask = () => {
   const authStore = useAuthStore();
 
   const createTask = async (title: string, description: string, tags: number[]) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/task_create`, {
         method: 'POST',
@@ -36,7 +34,6 @@ export const useTask = () => {
   }
 
   const fetchTasks = async () => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks`, {
         headers: {
@@ -56,7 +53,6 @@ export const useTask = () => {
   };
 
   const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
         method: 'PUT',
@@ -84,7 +80,6 @@ export const useTask = () => {
   }
 
   const deleteTask = async (taskId: number) => {
-    authStore.loadToken();
     try {
       const response = await fetch(`${apiBaseUrl}/api/tasks/delete?task_id=${taskId}`, {
         method: 'DELETE',
