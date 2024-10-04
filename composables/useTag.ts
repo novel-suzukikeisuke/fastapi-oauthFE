@@ -6,7 +6,6 @@ import { useAuthStore } from '~/store/auth';
 export const useTag = () => {
   const tags = ref<TagResponse[]>([]);
   const authStore = useAuthStore();
-  authStore.loadToken();
 
   const createTag = async (name: string, color: number) => {
     try {
