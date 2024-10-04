@@ -27,9 +27,6 @@
         <v-list-item>
           <v-btn  color="surface-variant" @click="logOut">ログアウト</v-btn>
         </v-list-item>
-        <v-list-item>
-          <updateDialog :user="user!" />
-        </v-list-item>
       </v-list>
     </v-menu>
   </v-app-bar>
@@ -38,7 +35,6 @@
 <script setup lang="ts">
 import { ref, computed, defineProps } from 'vue';
 import { useAuth } from '~/composables/useAuth'; // useAuthをインポート
-import updateDialog from './users/updateDialog.vue';
 import { UserRole } from '~/constants/userRole';
 
 // propsを受け取る
