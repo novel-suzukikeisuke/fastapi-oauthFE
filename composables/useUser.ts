@@ -72,7 +72,7 @@ export const useUser = () => {
     }
   };
 
-  const updateUser = async (userId: number, username: string, email: string, password: string, role: string) => {
+  const updateUser = async (userId: number, username: string, email: string, password: string, role: number) => {
     try {
       const response = await fetch(`${apiBaseUrl}/api/user/update?user_id=${userId}`, {
         method: 'PUT',
