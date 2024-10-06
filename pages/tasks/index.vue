@@ -5,6 +5,25 @@
         <h1>タスク一覧</h1>
         <createDialog @taskFetch="fetchTasks" />
       </v-col>
+      <v-col cols="12">
+        <!-- タグフィルタリング -->
+        <tagFilter
+          :tags="tags"
+          :filter-tag-id="filterTagId"
+          @filterChange="onTagFilterChange"
+        />
+        <!-- 完了状態フィルタリング -->
+        <completeFilter
+          :filter-completed="filterCompleted"
+          @filterChange="onCompletedFilterChange"
+        />
+        <!-- 日付フィルタリング -->
+        <dateFilter
+          :filter-start-date="filterStartDate"
+          :filter-end-date="filterEndDate"
+          @filterChange="onDateFilterChange"
+        />
+      </v-col>
       <v-col
         v-for="task in tasks"
         :key="task.id"
@@ -78,12 +97,35 @@ import { useTask } from '~/composables/useTask';
 import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
+import tagFilter from '~/components/tasks/filterTag.vue';
+import completeFilter from '~/components/tasks/filterComplete.vue';
+import dateFilter from '~/components/tasks/filterDate.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, fetchTasks} = useTask();
+const { tasks, fetchTasks, filterTagId, filterCompleted, filterStartDate, filterEndDate } = useTask();
+const { fetchTags, tags } = useTag();
 
-onMounted(fetchTasks);
+const onTagFilterChange = (selectedTagId: number) => {
+  filterTagId.value = selectedTagId;
+  fetchTasks(); // タグフィルタが変更されたときにタスクを再取得
+};
+
+const onCompletedFilterChange = (selectedCompletedStatus: number) => {
+  filterCompleted.value = selectedCompletedStatus;
+  fetchTasks(); // 完了状態フィルタが変更されたときにタスクを再取得
+};
+
+const onDateFilterChange = ({ startDate, endDate }) => {
+  filterStartDate.value = startDate;
+  filterEndDate.value = endDate;
+  fetchTasks(); // 日付フィルタが変更されたときにタスクを再取得
+};
+
+onMounted(async () => {
+  await fetchTasks();
+  await fetchTags(); // タグを取得
+});
 </script>
 
 <style scoped>
