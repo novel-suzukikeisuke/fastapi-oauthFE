@@ -5,6 +5,38 @@
         <h1>タスク一覧</h1>
         <createDialog @taskFetch="fetchTasks" />
       </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="4" md="5" sm="12">
+        <v-card
+          variant="tonal"
+        >
+          <v-card-item>
+            <v-row>
+              <v-col cols="3" class="d-flex justify-center">
+                <tagFilter @taskFetch="handleTagFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <completeFilter @taskFetch="handleCompleteFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <dateFilter @taskFetch="handleDateFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <v-btn
+                  color="surface-variant"
+                  text="リセット"
+                  variant="flat"
+                  width="100"
+                  @click="resetFilters"
+                ></v-btn>
+              </v-col>
+            </v-row>
+          </v-card-item>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col
         v-for="task in tasks"
         :key="task.id"
@@ -78,12 +110,41 @@ import { useTask } from '~/composables/useTask';
 import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
+import tagFilter from '~/components/tasks/filterTag.vue';
+import completeFilter from '~/components/tasks/filterComplete.vue';
+import dateFilter from '~/components/tasks/filterDate.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, fetchTasks} = useTask();
+const { tasks, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks } = useTask();
+const { fetchTags, tags } = useTag();
 
-onMounted(fetchTasks);
+const handleTagFilter = (selected: number) => {
+  filterTagId.value = selected;
+  fetchTasks();
+};
+const handleCompleteFilter = (selected: number) => {
+  filterCompleted.value = selected;
+  fetchTasks();
+};
+const handleDateFilter = (selectedStart: Date, selectedEnd: Date) => {
+  filterStartDate.value = selectedStart;
+  filterEndDate.value = selectedEnd;
+  fetchTasks();
+};
+
+const resetFilters = () => {
+  filterTagId.value = null;
+  filterCompleted.value = null;
+  filterStartDate.value = null;
+  filterEndDate.value = null;
+  fetchTasks();
+};
+
+onMounted(async () => {
+  await fetchTasks();
+  await fetchTags(); // タグを取得
+});
 </script>
 
 <style scoped>

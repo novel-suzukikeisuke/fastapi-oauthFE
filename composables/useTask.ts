@@ -5,6 +5,10 @@ import { useAuthStore } from '~/store/auth';
 
 export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);
+  const filterTagId = ref<number | null>(null);
+  const filterCompleted = ref<number | null>(null);
+  const filterStartDate = ref<Date | null>(null);
+  const filterEndDate = ref<Date | null>(null);
   const authStore = useAuthStore();
 
   const createTask = async (title: string, description: string, tags: number[]) => {
@@ -25,7 +29,7 @@ export const useTask = () => {
       if (response.ok) {
         return true;
       } else  {
-        alert(data.error)
+        alert(data.detail)
         return false;
       }
     } catch (error) {
@@ -35,7 +39,15 @@ export const useTask = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tasks`, {
+      // クエリパラメータを組み立て
+      const params = new URLSearchParams();
+      if (filterTagId.value !== null) params.append('tag_id', String(filterTagId.value));
+      if (filterCompleted.value !== null) params.append('completed', String(filterCompleted.value));
+      if (filterStartDate.value) params.append('start_date', filterStartDate.value.toISOString());
+      if (filterEndDate.value) params.append('end_date', filterEndDate.value.toISOString());
+
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const response = await fetch(`${apiBaseUrl}/api/tasks${queryString}`, {
         headers: {
           'Authorization': `Bearer ${authStore.token}`
         },
@@ -44,7 +56,7 @@ export const useTask = () => {
       if (response.ok) {
         tasks.value = data;
       } else {
-        alert(data[0]?.error || '不明なエラーが発生しました');
+        alert(data[0]?.detail || 'タスクが存在しません');
       }
     } catch (err) {
       console.error('An error occurred:', err);
@@ -71,7 +83,7 @@ export const useTask = () => {
       if (response.ok) {
         return true;
       } else  {
-        alert(data.error)
+        alert(data.detail)
         return false;
       }
     } catch (error) {
@@ -105,6 +117,10 @@ export const useTask = () => {
     fetchTasks,
     updateTask,
     deleteTask,
-    tasks
+    tasks,
+    filterTagId,
+    filterCompleted,
+    filterStartDate,
+    filterEndDate
   };
 };

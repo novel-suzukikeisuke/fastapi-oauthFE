@@ -7,5 +7,5 @@ export type TaskResponse = {
   completed: number;
   user_id: number;
   tags: TagResponse[];
-  error?: string;
+  detail?: string;
 };
