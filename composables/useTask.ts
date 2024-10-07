@@ -29,7 +29,7 @@ export const useTask = () => {
       if (response.ok) {
         return true;
       } else  {
-        alert(data.error)
+        alert(data.detail)
         return false;
       }
     } catch (error) {
@@ -56,7 +56,7 @@ export const useTask = () => {
       if (response.ok) {
         tasks.value = data;
       } else {
-        alert(data[0]?.error || '不明なエラーが発生しました');
+        alert(data[0]?.detail || 'タスクが存在しません');
       }
     } catch (err) {
       console.error('An error occurred:', err);
@@ -83,7 +83,7 @@ export const useTask = () => {
       if (response.ok) {
         return true;
       } else  {
-        alert(data.error)
+        alert(data.detail)
         return false;
       }
     } catch (error) {
