@@ -5,25 +5,38 @@
         <h1>タスク一覧</h1>
         <createDialog @taskFetch="fetchTasks" />
       </v-col>
-      <v-col cols="12">
-        <!-- タグフィルタリング -->
-        <tagFilter
-          :tags="tags"
-          :filter-tag-id="filterTagId"
-          @filterChange="onTagFilterChange"
-        />
-        <!-- 完了状態フィルタリング -->
-        <completeFilter
-          :filter-completed="filterCompleted"
-          @filterChange="onCompletedFilterChange"
-        />
-        <!-- 日付フィルタリング -->
-        <dateFilter
-          :filter-start-date="filterStartDate"
-          :filter-end-date="filterEndDate"
-          @filterChange="onDateFilterChange"
-        />
+    </v-row>
+    <v-row>
+      <v-col cols="4" md="4" sm="12">
+        <v-card
+          variant="tonal"
+        >
+          <v-card-item>
+            <v-row>
+              <v-col cols="3" class="d-flex justify-center">
+                <tagFilter @taskFetch="handleTagFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <completeFilter @taskFetch="handleCompleteFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <dateFilter @taskFetch="handleDateFilter" />
+              </v-col>
+              <v-col cols="3" class="d-flex justify-center">
+                <v-btn
+                  color="surface-variant"
+                  text="リセット"
+                  variant="flat"
+                  width="100"
+                  @click="resetFilters"
+                ></v-btn>
+              </v-col>
+            </v-row>
+          </v-card-item>
+        </v-card>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col
         v-for="task in tasks"
         :key="task.id"
@@ -103,23 +116,29 @@ import dateFilter from '~/components/tasks/filterDate.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, fetchTasks, filterTagId, filterCompleted, filterStartDate, filterEndDate } = useTask();
+const { tasks, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks } = useTask();
 const { fetchTags, tags } = useTag();
 
-const onTagFilterChange = (selectedTagId: number) => {
-  filterTagId.value = selectedTagId;
-  fetchTasks(); // タグフィルタが変更されたときにタスクを再取得
+const handleTagFilter = (selected: number) => {
+  filterTagId.value = selected;
+  fetchTasks();
+};
+const handleCompleteFilter = (selected: number) => {
+  filterCompleted.value = selected;
+  fetchTasks();
+};
+const handleDateFilter = (selectedStart: Date, selectedEnd: Date) => {
+  filterStartDate.value = selectedStart;
+  filterEndDate.value = selectedEnd;
+  fetchTasks();
 };
 
-const onCompletedFilterChange = (selectedCompletedStatus: number) => {
-  filterCompleted.value = selectedCompletedStatus;
-  fetchTasks(); // 完了状態フィルタが変更されたときにタスクを再取得
-};
-
-const onDateFilterChange = ({ startDate, endDate }) => {
-  filterStartDate.value = startDate;
-  filterEndDate.value = endDate;
-  fetchTasks(); // 日付フィルタが変更されたときにタスクを再取得
+const resetFilters = () => {
+  filterTagId.value = null;
+  filterCompleted.value = null;
+  filterStartDate.value = null;
+  filterEndDate.value = null;
+  fetchTasks();
 };
 
 onMounted(async () => {
