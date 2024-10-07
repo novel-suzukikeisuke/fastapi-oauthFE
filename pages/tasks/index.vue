@@ -7,7 +7,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="4" md="6" sm="12">
+      <v-col cols="4" md="5" sm="12">
         <v-card
           variant="tonal"
         >
