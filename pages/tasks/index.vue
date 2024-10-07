@@ -6,35 +6,37 @@
         <createDialog @taskFetch="fetchTasks" />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="4" md="5" sm="12">
+    <v-row class="d-flex align-center">
+      <v-col cols="3" md="3" sm="12">
         <v-card
           variant="tonal"
         >
           <v-card-item>
             <v-row>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <tagFilter @taskFetch="handleTagFilter" />
               </v-col>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <completeFilter @taskFetch="handleCompleteFilter" />
               </v-col>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <dateFilter @taskFetch="handleDateFilter" />
-              </v-col>
-              <v-col cols="3" class="d-flex justify-center">
-                <v-btn
-                  color="surface-variant"
-                  text="リセット"
-                  variant="flat"
-                  width="100"
-                  @click="resetFilters"
-                ></v-btn>
               </v-col>
             </v-row>
           </v-card-item>
         </v-card>
       </v-col>
+      <v-spacer />
+      <v-col cols="2" md="2" sm="12" class="d-flex justify-end">
+        <searchDialog @taskSearch="handleSearch" />
+      <v-btn
+        color="surface-variant"
+        variant="flat"
+        @click="resetFilters"
+        icon="mdi mdi-rotate-right"
+        class="ms-2"
+      ></v-btn>
+    </v-col>
     </v-row>
     <v-row>
       <v-col
@@ -113,10 +115,11 @@ import deleteDialog from '~/components/tasks/deleteDialog.vue';
 import tagFilter from '~/components/tasks/filterTag.vue';
 import completeFilter from '~/components/tasks/filterComplete.vue';
 import dateFilter from '~/components/tasks/filterDate.vue';
+import searchDialog from '~/components/tasks/searchDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks } = useTask();
+const { tasks, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks } = useTask();
 const { fetchTags, tags } = useTag();
 
 const handleTagFilter = (selected: number) => {
@@ -139,6 +142,10 @@ const resetFilters = () => {
   filterStartDate.value = null;
   filterEndDate.value = null;
   fetchTasks();
+};
+
+const handleSearch = async ({ title, description }: { title: string; description: string }) => {
+  await searchTasks(title, description); // 検索条件を使用してタスクを取得
 };
 
 onMounted(async () => {
