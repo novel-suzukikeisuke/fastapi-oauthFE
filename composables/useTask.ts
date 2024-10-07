@@ -112,11 +112,45 @@ export const useTask = () => {
     }
   }
 
+  const searchTasks = async (title: string, description: string) => {
+    try {
+      // リクエストボディを初期化
+      const body: any = {};
+      // 入力されている場合のみプロパティを追加
+      if (title) {
+        body.title = title;
+      }
+      if (description) {
+        body.description = description;
+      }
+      const response = await fetch(`${apiBaseUrl}/api/tasks/search`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      const data: TaskResponse[] = await response.json();
+      if (response.ok) {
+        tasks.value = data;
+        return true;
+      } else {
+        alert(data[0]?.detail || 'タスクが存在しません');
+        return false;
+      }
+    } catch (err) {
+      console.error('An error occurred:', err);
+      alert('タスクの取得に失敗しました');
+    }
+  };
+
   return {
     createTask,
     fetchTasks,
     updateTask,
     deleteTask,
+    searchTasks,
     tasks,
     filterTagId,
     filterCompleted,
