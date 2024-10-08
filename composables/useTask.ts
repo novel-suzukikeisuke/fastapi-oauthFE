@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
 import type { TaskResponse, PaginatedTasksResponse } from '~/types/task';
 import { useAuthStore } from '~/store/auth';
+import { TaskPagination } from '~/constants/taskPagination';
 
 export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);
@@ -9,9 +10,9 @@ export const useTask = () => {
   const filterCompleted = ref<number | null>(null);
   const filterStartDate = ref<Date | null>(null);
   const filterEndDate = ref<Date | null>(null);
-  const page = ref<number>(1);
-  const limit = ref<number>(6);
-  const totalTasks = ref<number>(0);
+  const page = ref<number>(TaskPagination.DEFAULT_PAGE);
+  const limit = ref<number>(TaskPagination.DEFAULT_LIMIT);
+  const totalTasks = ref<number>(TaskPagination.TOTAL_TASK);
   const authStore = useAuthStore();
 
   const createTask = async (title: string, description: string, tags: number[]) => {
