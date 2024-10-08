@@ -5,6 +5,7 @@ export type TaskResponse = {
   title: string;
   description: string;
   completed: number;
+  file: string;
   user_id: number;
   tags: TagResponse[];
   detail?: string;
