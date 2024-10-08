@@ -15,19 +15,21 @@ export const useTask = () => {
   const totalTasks = ref<number>(TaskPagination.TOTAL_TASK);
   const authStore = useAuthStore();
 
-  const createTask = async (title: string, description: string, tags: number[]) => {
+  const createTask = async (title: string, description: string, tags: number[], file: File | null) => {
     try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
+      if (file) {
+        formData.append('file', file); // ファイルを追加
+      }
       const response = await fetch(`${apiBaseUrl}/api/task_create`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${authStore.token}`
         },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          tags: tags
-        })
+        body: formData
       })
       const data: TaskResponse = await response.json()
       if (response.ok) {
@@ -84,20 +86,21 @@ export const useTask = () => {
     await fetchTasks();
   };
 
-  const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
+  const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[], file: File | null) => {
     try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
+      if (file) {
+        formData.append('file', file); // ファイルを追加
+      }
       const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${authStore.token}`
         },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          completed: completed,
-          tags: tags
-        })
+        body: formData
       })
       const data: TaskResponse = await response.json()
       if (response.ok) {
