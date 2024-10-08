@@ -9,3 +9,11 @@ export type TaskResponse = {
   tags: TagResponse[];
   detail?: string;
 };
+
+export type PaginatedTasksResponse = {
+  total_tasks: number;
+  page: number;
+  limit: number;
+  tasks: TaskResponse[];
+  detail?: string;
+};
