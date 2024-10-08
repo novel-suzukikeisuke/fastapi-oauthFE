@@ -3,7 +3,7 @@ import { UserRole } from '~/constants/userRole';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const authStore = useAuthStore();
-  const { fetchUser, user } = useUser();
+  const { fetchUser } = useUser();
 
   const NOT_AUTH_PAGES = ['/signUp', '/'];
 
@@ -19,10 +19,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
 
     if (authStore.token) {
-      await fetchUser();
+      const user = await fetchUser();
 
-      if (user.value && user.value.role) { // user.value と user.value.role を確認
-        if (to.path === '/users' && user.value.role !== UserRole.ADMIN) { // user.value.role にアクセス
+      if (user) {
+        if (to.path === '/users' && user.role !== UserRole.ADMIN) {
           return navigateTo('/tasks');
         }
       }
