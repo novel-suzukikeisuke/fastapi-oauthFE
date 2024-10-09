@@ -169,6 +169,35 @@ export const useTask = () => {
     }
   };
 
+  const downloadFile = async (filename: string) => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tasks/download/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+        },
+      });
+      // ステータスコードがOKかどうかを確認
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // Blobオブジェクトを作成
+      const blob = await response.blob();
+      // ダウンロード用のURLを作成
+      const url = window.URL.createObjectURL(blob);
+      // aタグを作成してクリックをシミュレート
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename); // ダウンロード属性付与、ダウンロード時のファイル名を指定
+      document.body.appendChild(link);
+      link.click();
+      // 要素を削除し、メモリを解放
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
+
   return {
     createTask,
     fetchTasks,
@@ -177,6 +206,7 @@ export const useTask = () => {
     updateTask,
     deleteTask,
     searchTasks,
+    downloadFile,
     tasks,
     totalTasks,
     page,
