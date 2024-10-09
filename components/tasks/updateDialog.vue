@@ -51,12 +51,7 @@
             multiple
             @change="updateSelectedTags"
           ></v-select>
-          <v-file-input
-            v-model="file"
-            label="ファイルを選択してください"
-            accept=".png,.jpg,.jpeg,.pdf"
-            outlined
-          ></v-file-input>
+          <fileSelection v-model:file="file" />
         </v-form>
       </v-card-item>
       <v-card-actions>
@@ -82,6 +77,7 @@ import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
 import type { TagResponse } from '~/types/tag';
 import { TaskCompleted } from '~/constants/taskCompleted';
+import fileSelection from './fileSelection.vue';
 
 const { updateTask } = useTask();
 

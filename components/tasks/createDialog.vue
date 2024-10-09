@@ -39,12 +39,7 @@
             prepend-icon="mdi mdi-tag"
             @change="updateSelectedTags"
           ></v-select>
-          <v-file-input
-            v-model="file"
-            label="ファイルを選択してください"
-            accept=".png,.jpg,.jpeg,.pdf"
-            outlined
-          ></v-file-input>
+          <fileSelection v-model:file="file" />
         </v-form>
       </v-card-item>
       <v-card-actions>
@@ -65,9 +60,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
+import fileSelection from './fileSelection.vue';
 import type { TagResponse } from '~/types/tag';
 
 const { createTask } = useTask();
