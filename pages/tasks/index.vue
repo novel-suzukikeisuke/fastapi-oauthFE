@@ -96,6 +96,13 @@
             </v-chip>
           </v-card-text>
           <v-card-actions>
+            <v-btn
+              color="surface-variant"
+              variant="flat"
+              @click="downloadFile(task.file_path.replace('uploads/', ''))"
+            >
+              ダウンロード
+            </v-btn>
             <v-spacer />
             <updateDialog :task="task" @taskFetch="fetchTasks" />
             <deleteDialog :task="task" @taskFetch="fetchTasks" />
@@ -133,7 +140,7 @@ import searchDialog from '~/components/tasks/searchDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks } = useTask();
+const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask();
 const { fetchTags, tags } = useTag();
 
 const showAllButton = ref(true);
