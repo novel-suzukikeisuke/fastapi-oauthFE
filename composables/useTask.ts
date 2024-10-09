@@ -1,7 +1,8 @@
 import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
-import type { TaskResponse } from '~/types/task';
+import type { TaskResponse, PaginatedTasksResponse } from '~/types/task';
 import { useAuthStore } from '~/store/auth';
+import { TaskPagination } from '~/constants/taskPagination';
 
 export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);
@@ -9,6 +10,9 @@ export const useTask = () => {
   const filterCompleted = ref<number | null>(null);
   const filterStartDate = ref<Date | null>(null);
   const filterEndDate = ref<Date | null>(null);
+  const page = ref<number>(TaskPagination.DEFAULT_PAGE);
+  const limit = ref<number>(TaskPagination.DEFAULT_LIMIT);
+  const totalTasks = ref<number>(TaskPagination.TOTAL_TASK);
   const authStore = useAuthStore();
 
   const createTask = async (title: string, description: string, tags: number[]) => {
@@ -45,6 +49,8 @@ export const useTask = () => {
       if (filterCompleted.value !== null) params.append('completed', String(filterCompleted.value));
       if (filterStartDate.value) params.append('start_date', filterStartDate.value.toISOString());
       if (filterEndDate.value) params.append('end_date', filterEndDate.value.toISOString());
+      params.append('page', String(page.value));
+      params.append('limit', String(limit.value));
 
       const queryString = params.toString() ? `?${params.toString()}` : '';
       const response = await fetch(`${apiBaseUrl}/api/tasks${queryString}`, {
@@ -52,16 +58,30 @@ export const useTask = () => {
           'Authorization': `Bearer ${authStore.token}`
         },
       });
-      const data: TaskResponse[] = await response.json();  // データを先に取得しておく
+      const data: PaginatedTasksResponse = await response.json();  // データを先に取得しておく
       if (response.ok) {
-        tasks.value = data;
+        tasks.value = data.tasks;
+        totalTasks.value = data.total_tasks;
       } else {
-        alert(data[0]?.detail || 'タスクが存在しません');
+        alert(data.detail || 'タスクが存在しません');
       }
     } catch (err) {
       console.error('An error occurred:', err);
       alert('タスクの取得に失敗しました');
     }
+  };
+
+  // fetchAllTasks関数を実装
+  const fetchAllTasks = async () => {
+    limit.value = 9999; // 大きな数を設定して全てのタスクを取得
+    page.value = 1; // 最初のページにリセット
+    await fetchTasks();
+  };
+
+  const fetchDefaultTasks = async () => {
+    limit.value = 6; // 大きな数を設定して全てのタスクを取得
+    page.value = 1; // 最初のページにリセット
+    await fetchTasks();
   };
 
   const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
@@ -148,10 +168,15 @@ export const useTask = () => {
   return {
     createTask,
     fetchTasks,
+    fetchAllTasks,
+    fetchDefaultTasks,
     updateTask,
     deleteTask,
     searchTasks,
     tasks,
+    totalTasks,
+    page,
+    limit,
     filterTagId,
     filterCompleted,
     filterStartDate,
