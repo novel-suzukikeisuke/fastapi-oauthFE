@@ -12,10 +12,6 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn icon>
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
-
     <v-menu offset-y>
       <template #activator="{ props }">
         <v-btn v-bind="props">

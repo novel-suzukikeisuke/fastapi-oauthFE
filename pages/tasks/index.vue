@@ -6,35 +6,37 @@
         <createDialog @taskFetch="fetchTasks" />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="4" md="5" sm="12">
+    <v-row class="d-flex align-center">
+      <v-col cols="12" md="3" sm="12">
         <v-card
           variant="tonal"
         >
           <v-card-item>
             <v-row>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <tagFilter @taskFetch="handleTagFilter" />
               </v-col>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <completeFilter @taskFetch="handleCompleteFilter" />
               </v-col>
-              <v-col cols="3" class="d-flex justify-center">
+              <v-col cols="4" class="d-flex justify-center">
                 <dateFilter @taskFetch="handleDateFilter" />
-              </v-col>
-              <v-col cols="3" class="d-flex justify-center">
-                <v-btn
-                  color="surface-variant"
-                  text="リセット"
-                  variant="flat"
-                  width="100"
-                  @click="resetFilters"
-                ></v-btn>
               </v-col>
             </v-row>
           </v-card-item>
         </v-card>
       </v-col>
+      <v-spacer />
+      <v-col cols="12" md="2" sm="12" class="d-flex justify-end">
+        <searchDialog @taskSearch="handleSearch" />
+      <v-btn
+        color="surface-variant"
+        variant="flat"
+        @click="resetFilters"
+        icon="mdi mdi-rotate-right"
+        class="ms-2"
+      ></v-btn>
+    </v-col>
     </v-row>
     <v-row>
       <v-col
@@ -101,11 +103,25 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row v-if="showAllButton">
+      <v-col class="d-flex justify-center">
+        <v-btn @click="fetchAllTasks">もっと見る</v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="showPagination">
+      <v-col>
+        <v-pagination
+          v-model="page"
+          :length="totalPages"
+          @click="fetchTasks"
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useTask } from '~/composables/useTask';
 import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
@@ -113,11 +129,25 @@ import deleteDialog from '~/components/tasks/deleteDialog.vue';
 import tagFilter from '~/components/tasks/filterTag.vue';
 import completeFilter from '~/components/tasks/filterComplete.vue';
 import dateFilter from '~/components/tasks/filterDate.vue';
+import searchDialog from '~/components/tasks/searchDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks } = useTask();
+const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks } = useTask();
 const { fetchTags, tags } = useTag();
+
+const showAllButton = ref(true);
+const showPagination = ref(false);
+
+const totalPages = computed(() => {
+  return Math.ceil(totalTasks.value / limit.value); // totalTasks を limit で割ったページ数
+});
+
+/* 600pxより小さければshowAllButtonsをtrueに設定し、それ以外の場合はfalseに設定 */
+const checkScreenSize = () => {
+  showAllButton.value = window.innerWidth < 600;
+  showPagination.value = window.innerWidth > 600;
+};
 
 const handleTagFilter = (selected: number) => {
   filterTagId.value = selected;
@@ -138,12 +168,22 @@ const resetFilters = () => {
   filterCompleted.value = null;
   filterStartDate.value = null;
   filterEndDate.value = null;
-  fetchTasks();
+  fetchDefaultTasks();
+};
+
+const handleSearch = async ({ title, description }: { title: string; description: string }) => {
+  await searchTasks(title, description); // 検索条件を使用してタスクを取得
 };
 
 onMounted(async () => {
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
   await fetchTasks();
   await fetchTags(); // タグを取得
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkScreenSize);
 });
 </script>
 
