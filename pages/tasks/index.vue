@@ -94,9 +94,9 @@
               <v-icon icon="mdi-label" start></v-icon>
               {{ tag.name }}
             </v-chip>
-
           </v-card-text>
           <v-card-actions>
+            <imgDialog :task />
             <v-btn
               color="surface-variant"
               variant="flat"
@@ -138,6 +138,7 @@ import tagFilter from '~/components/tasks/filterTag.vue';
 import completeFilter from '~/components/tasks/filterComplete.vue';
 import dateFilter from '~/components/tasks/filterDate.vue';
 import searchDialog from '~/components/tasks/searchDialog.vue';
+import imgDialog from '~/components/tasks/imgDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
