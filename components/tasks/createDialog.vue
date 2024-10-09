@@ -20,12 +20,14 @@
             :rules="[titleRules]"
             :counter="20"
             label="タイトル"
+            prepend-icon="mdi mdi-pencil"
           ></v-text-field>
           <v-text-field
             v-model="description"
             :rules="[descriptionRules]"
             :counter="50"
             label="説明"
+            prepend-icon="mdi mdi-book-open-variant-outline"
           ></v-text-field>
           <v-select
             v-model="tags"
@@ -34,8 +36,15 @@
             item-value="id"
             :items="tagsItems"
             multiple
+            prepend-icon="mdi mdi-tag"
             @change="updateSelectedTags"
           ></v-select>
+          <v-file-input
+            v-model="file"
+            label="ファイルを選択してください"
+            accept=".png,.jpg,.jpeg,.pdf"
+            outlined
+          ></v-file-input>
         </v-form>
       </v-card-item>
       <v-card-actions>
@@ -68,6 +77,7 @@ const emit = defineEmits(['taskFetch']);
 const title = ref<string>('');
 const description = ref<string>('');
 const tags = ref<number[]>([]);
+const file = ref<File | null>(null); // アップロードファイルを管理するref
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 const tagsItems = ref<TagResponse[]>([]);// タグのリストを格納するためのref
@@ -87,7 +97,7 @@ const updateSelectedTags = (selectedTags: TagResponse[]) => {
 };
 
 const _createTask = async () => {
-  const success = await createTask(title.value, description.value, tags.value); // IDの配列を送信
+  const success = await createTask(title.value, description.value, tags.value, file.value); // IDの配列を送信
   if (success) {
     title.value = '';
     description.value = '';
