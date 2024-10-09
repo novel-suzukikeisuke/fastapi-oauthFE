@@ -20,11 +20,7 @@ export const useTask = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
-      // forEach: 配列の各要素に対して何らかの処理を行う
-      // tag.toString(): tagsの要素tagをstring型に変換
-      tags.forEach(tag => {
-        formData.append('tags', tag.toString()); // タグのIDを文字列として送信
-    });
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
       if (file) {
         formData.append('file', file); // ファイルを追加
       }
@@ -96,9 +92,7 @@ export const useTask = () => {
       formData.append('title', title);
       formData.append('description', description);
       formData.append('completed', completed.toString())
-      tags.forEach(tag => {
-        formData.append('tags', tag.toString()); // タグのIDを文字列として送信
-      });
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
       if (file) {
         formData.append('file', file); // ファイルを追加
       }
