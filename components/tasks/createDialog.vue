@@ -84,8 +84,8 @@ const { fetchTags, tags: fetchedTags } = useTag();
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります';
-const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります';
+const titleRules = (v: string) => (!!v && v.length <= 20)  || 'タイトルは必須で、20文字以内である必要があります';
+const descriptionRules = (v: string) =>(!!v && v.length <= 50) || '説明は必須で、50文字以内である必要があります';
 
 //tagsItemsから選択されたタグオブジェクトがselectedTags
 const updateSelectedTags = (selectedTags: TagResponse[]) => {

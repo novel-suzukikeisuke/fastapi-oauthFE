@@ -18,11 +18,12 @@ export const useAuth = () => {
         })
       })
       const data: AuthResponse = await response.json()
+      console.log(data)
       if (response.ok) {
         authStore.setToken(data.access_token);
         navigateTo('/tasks')
       } else {
-        alert(data.detail)
+        alert(`ログインに失敗しました: ${data.detail}`)
       }
     } catch (error) {
       console.error('An error occurred:', error)
