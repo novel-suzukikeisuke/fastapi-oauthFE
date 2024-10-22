@@ -17,7 +17,7 @@
           <v-form v-model="valid">
             <v-text-field
               v-model="name"
-              :rules="[nameRules]"
+              :rules="nameRules"
               :counter="10"
               label="タグ名"
             ></v-text-field>
@@ -78,7 +78,10 @@ const valid = ref<boolean>(false); // フォームのバリデーション結果
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const nameRules = (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります';
+const nameRules = [
+  (v: string) => !!v || 'タグ名を入力してください',  // 空欄禁止
+  (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります'  // 文字数制限
+]
 
 const _updateTag = async () => {
   const success = await updateTag(props.tag.id, name.value, color.value);

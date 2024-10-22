@@ -98,8 +98,6 @@ const nameRules = (v: string) => (!!v && v.length <= 20) || 'ユーザー名は�
 const emailRules = (v: string) => (!!v && v.length <= 50 && emailPattern.test(v)) || 'メールアドレスは必須で、正しいメールアドレスを50文字以内で入力してください'; // 空欄禁止 & EmailStr & 50文字以内
 const passwordRules = (v: string) => (!!v && v.length >= 4 && v.length <= 10) || 'パスワードは4文字以上10文字以内である必要があります'; // 空欄禁止 & 4文字以上10文字以内
 
-
-
 const _updateUser = async () => {
   const success = await updateUser(props.user.id, username.value, email.value, password.value, role.value);
   if (success) {

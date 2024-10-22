@@ -35,6 +35,7 @@
             item-title="name"
             item-value="id"
             :items="tagsItems"
+            :rules="[tagsRules]"
             multiple
             prepend-icon="mdi mdi-tag"
             @change="updateSelectedTags"
@@ -86,6 +87,8 @@ const { fetchTags, tags: fetchedTags } = useTag();
 // false : バリデーションが失敗した場合エラーメッセージ表示
 const titleRules = (v: string) => (!!v && v.length <= 20)  || 'タイトルは必須で、20文字以内である必要があります';
 const descriptionRules = (v: string) =>(!!v && v.length <= 50) || '説明は必須で、50文字以内である必要があります';
+const tagsRules = (v: number[]) => v.length > 0 || '少なくとも1つのタグを選択してください';
+
 
 //tagsItemsから選択されたタグオブジェクトがselectedTags
 const updateSelectedTags = (selectedTags: TagResponse[]) => {

@@ -8,21 +8,21 @@
       <v-form @submit.prevent="_signUp" v-model="valid">
         <v-text-field
           v-model="username"
-          :rules="[nameRules]"
+          :rules="nameRules"
           :counter="20"
           label="ユーザーネーム"
           required
         ></v-text-field>
         <v-text-field
           v-model="email"
-          :rules="[emailRules]"
+          :rules="emailRules"
           :counter="50"
           label="メールアドレス"
           required
         ></v-text-field>
         <v-text-field
           v-model="password"
-          :rules="[passwordRules]"
+          :rules="passwordRules"
           :counter="10"
           label="パスワード"
           type="password"
@@ -61,13 +61,27 @@ const email = ref<string>('');
 const password = ref<string>('');
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 
+// メールアドレスの正規表現パターン
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const nameRules = (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります';
-const emailRules = (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります';
-const passwordRules = (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります';
+const nameRules = [
+  (v: string) => !!v || 'ユーザー名を入力してください',  // 空欄禁止
+  (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります'  // 文字数制限
+]
+const emailRules = [
+  (v: string) => !!v || 'メールアドレスを入力してください',  // 空欄禁止
+  (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります',  // 文字数制限
+  (v: string) => emailPattern.test(v) || '正しいメールアドレスを入力してください'
+]
+const passwordRules = [
+  (v: string) => !!v || 'パスワードを入力してください',  // 空欄禁止
+  (v: string) => v.length >= 4 || 'パスワードは4文字以上である必要があります',  // 文字数制限
+  (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります'  // 文字数制限
+]
 
 const _signUp = async () => {
   await signUp(username.value, email.value, password.value);
