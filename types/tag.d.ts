@@ -1,5 +1,7 @@
 export type TagResponse = {
   id: number;
   name: string;
-  error?: string;
+  color: number;
+  user_id :number;
+  detail?: string;
 };

@@ -7,5 +7,13 @@ export type TaskResponse = {
   completed: number;
   user_id: number;
   tags: TagResponse[];
-  error?: string;
+  detail?: string;
+};
+
+export type PaginatedTasksResponse = {
+  total_tasks: number;
+  page: number;
+  limit: number;
+  tasks: TaskResponse[];
+  detail?: string;
 };

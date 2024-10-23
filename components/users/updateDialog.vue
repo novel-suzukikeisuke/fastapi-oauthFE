@@ -34,8 +34,13 @@
           ></v-text-field>
           <v-select
             v-model="role"
-            label="Select"
-            :items="['admin', 'user']"
+            label="役割"
+            item-title="title"
+            item-value="value"
+            :items="[
+              { title: '管理者', value: UserRole.ADMIN },
+              { title: 'ユーザー', value: UserRole.USER }
+            ]"
           ></v-select>
         </v-form>
       </v-card-item>
@@ -59,6 +64,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUser } from '~/composables/useUser';
+import { UserRole } from '~/constants/userRole';
 
 const { updateUser } = useUser();
 
@@ -69,7 +75,7 @@ const props = defineProps<{
     username: string;
     email: string;
     disabled: boolean;
-    role: string;
+    role: number;
   };
 }>();
 
@@ -78,7 +84,7 @@ const emit = defineEmits(['userFetch']);
 const username = ref<string>(props.user.username);
 const email = ref<string>(props.user.email);
 const password = ref<string>('');
-const role = ref<string>(props.user.role)
+const role = ref<number>(props.user.role)
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 
@@ -97,7 +103,6 @@ const _updateUser = async () => {
     emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
-
 </script>
 
 <style scoped>

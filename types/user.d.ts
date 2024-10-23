@@ -3,6 +3,6 @@ export type UserResponse = {
   username: string;
   email: string;
   disabled: boolean;
-  role: string;
-  error?: string;
+  role: number;
+  detail?: string;
 };
