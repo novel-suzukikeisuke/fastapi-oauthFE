@@ -1,64 +1,64 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
-  <template v-slot:activator="{ props: activatorProps }">
-    <v-btn
-      v-bind="activatorProps"
-      color="surface-variant"
-      text="編集"
-      variant="flat"
-    ></v-btn>
-  </template>
+    <template v-slot:activator="{ props: activatorProps }">
+      <v-btn
+        v-bind="activatorProps"
+        color="surface-variant"
+        text="編集"
+        variant="flat"
+      ></v-btn>
+    </template>
 
-  <template v-slot:default="{ isActive }">
-    <v-card>
-      <v-card-title class="text-h5">ユーザー編集</v-card-title>
-      <v-card-item>
-        <v-form v-model="valid">
-          <v-text-field
-            v-model="username"
-            :rules="[nameRules]"
-            :counter="20"
-            label="ユーザー名"
-          ></v-text-field>
-          <v-text-field
-            v-model="email"
-            :rules="[emailRules]"
-            :counter="50"
-            label="メールアドレス"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            :rules="[passwordRules]"
-            :counter="10"
-            label="パスワード"
-          ></v-text-field>
-          <v-select
-            v-model="role"
-            label="役割"
-            item-title="title"
-            item-value="value"
-            :items="[
-              { title: '管理者', value: UserRole.ADMIN },
-              { title: 'ユーザー', value: UserRole.USER }
-            ]"
-          ></v-select>
-        </v-form>
-      </v-card-item>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          text="編集"
-          @click="_updateUser"
-          :disabled="!valid"
-        ></v-btn>
-        <v-btn
-          text="閉じる"
-          @click="isActive.value = false"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog>
+    <template v-slot:default="{ isActive }">
+      <v-card>
+        <v-card-title class="text-h5">ユーザー編集</v-card-title>
+        <v-card-item>
+          <v-form v-model="valid">
+            <v-text-field
+              v-model="username"
+              :rules="[nameRules]"
+              :counter="20"
+              label="ユーザー名"
+            ></v-text-field>
+            <v-text-field
+              v-model="email"
+              :rules="[emailRules]"
+              :counter="50"
+              label="メールアドレス"
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              :rules="[passwordRules]"
+              :counter="10"
+              label="パスワード"
+            ></v-text-field>
+            <v-select
+              v-model="role"
+              label="役割"
+              item-title="title"
+              item-value="value"
+              :items="[
+                { title: '管理者', value: UserRole.ADMIN },
+                { title: 'ユーザー', value: UserRole.USER }
+              ]"
+            ></v-select>
+          </v-form>
+        </v-card-item>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            text="編集"
+            @click="_updateUser"
+            :disabled="!valid"
+          ></v-btn>
+          <v-btn
+            text="閉じる"
+            @click="isActive.value = false"
+          ></v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -106,6 +106,3 @@ const _updateUser = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

@@ -1,84 +1,85 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
-  <template v-slot:activator="{ props: activatorProps }">
-    <v-btn
-      v-bind="activatorProps"
-      color="surface-variant"
-      text="編集"
-      variant="flat"
-      @click="fetchTags"
-    ></v-btn>
-  </template>
+    <template v-slot:activator="{ props: activatorProps }">
+      <v-btn
+        v-bind="activatorProps"
+        color="surface-variant"
+        text="編集"
+        variant="flat"
+        @click="fetchTags"
+      ></v-btn>
+    </template>
 
-  <template v-slot:default="{ isActive }">
-    <v-card>
-      <v-card-title class="text-h5">タスク編集</v-card-title>
-      <v-card-item>
-        <v-form v-model="valid">
-          <v-text-field
-            v-model="title"
-            :rules="[titleRules]"
-            :counter="20"
-            label="タイトル"
-            prepend-icon="mdi mdi-pencil"
-          ></v-text-field>
-          <v-text-field
-            v-model="description"
-            :rules="[descriptionRules]"
-            :counter="50"
-            label="説明"
-            prepend-icon="mdi mdi-book-open-variant-outline"
-          ></v-text-field>
-          <v-select
-            v-model="completed"
-            label="完了状態"
-            item-title="title"
-            item-value="value"
-            :items="[
-                { title: '未対応', value: TaskCompleted.NOT_STARTED },
-                { title: '処理中', value: TaskCompleted.IN_PROGRESS },
-                { title: '完了', value: TaskCompleted.COMPLETED }
-              ]"
-            prepend-icon="mdi mdi-briefcase-outline"
-          ></v-select>
-          <v-select
-            v-model="tags"
-            label="関連タグ"
-            item-title="name"
-            item-value="id"
-            :items="availableTags"
-            prepend-icon="mdi mdi-tag"
-            multiple
-          ></v-select>
-          <fileSelection v-model:file="file" />
-        </v-form>
-      </v-card-item>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          text="編集"
-          @click="_updateTask"
-          :disabled="!valid"
-        ></v-btn>
-        <v-btn
-          text="閉じる"
-          @click="isActive.value = false"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog>
+    <template v-slot:default="{ isActive }">
+      <v-card>
+        <v-card-title class="text-h5">タスク編集</v-card-title>
+        <v-card-item>
+          <v-form v-model="valid">
+            <v-text-field
+              v-model="title"
+              :rules="[titleRules]"
+              :counter="20"
+              label="タイトル"
+              prepend-icon="mdi mdi-pencil"
+            ></v-text-field>
+            <v-text-field
+              v-model="description"
+              :rules="[descriptionRules]"
+              :counter="50"
+              label="説明"
+              prepend-icon="mdi mdi-book-open-variant-outline"
+            ></v-text-field>
+            <v-select
+              v-model="completed"
+              label="完了状態"
+              item-title="title"
+              item-value="value"
+              :items="[
+                  { title: '未対応', value: TaskCompleted.NOT_STARTED },
+                  { title: '処理中', value: TaskCompleted.IN_PROGRESS },
+                  { title: '完了', value: TaskCompleted.COMPLETED }
+                ]"
+              prepend-icon="mdi mdi-briefcase-outline"
+            ></v-select>
+            <v-select
+              v-model="tags"
+              label="関連タグ"
+              item-title="name"
+              item-value="id"
+              :items="availableTags"
+              prepend-icon="mdi mdi-tag"
+              multiple
+            ></v-select>
+            <fileSelection v-model:file="file" />
+          </v-form>
+        </v-card-item>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            text="編集"
+            @click="_updateTask"
+            :disabled="!valid"
+          ></v-btn>
+          <v-btn
+            text="閉じる"
+            @click="isActive.value = false"
+          ></v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
-import type { TagResponse } from '~/types/tag';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import fileSelection from './fileSelection.vue';
+import type { TagResponse } from '~/types/tag';
 
 const { updateTask } = useTask();
+const { fetchTags, tags: availableTags } = useTag();
 
 const props = defineProps<{
   task: {
@@ -100,8 +101,6 @@ const file = ref<File | null>(null); // アップロードファイルを管理�
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 
-const { fetchTags, tags: availableTags } = useTag();
-
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
@@ -117,6 +116,3 @@ const _updateTask = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

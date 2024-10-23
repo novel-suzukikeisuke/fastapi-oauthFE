@@ -67,6 +67,7 @@ import { useTag } from '~/composables/useTag';
 import fileSelection from './fileSelection.vue';
 
 const { createTask } = useTask();
+const { fetchTags, tags: availableTags } = useTag();
 
 const emit = defineEmits(['taskFetch']);
 
@@ -76,8 +77,6 @@ const tags = ref<number[]>([]); // これは正しい定義
 const file = ref<File | null>(null); // アップロードファイルを管理するref
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
-
-const { fetchTags, tags: availableTags } = useTag();
 
 // バリデーションルール
 // v : 検証対象の値
@@ -98,6 +97,3 @@ const _createTask = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

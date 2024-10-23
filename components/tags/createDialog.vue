@@ -83,6 +83,3 @@ const _createTag = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

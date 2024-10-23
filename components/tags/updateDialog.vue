@@ -91,6 +91,3 @@ const _updateTag = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

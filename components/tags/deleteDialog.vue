@@ -62,6 +62,3 @@ const _deleteTag = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

@@ -87,6 +87,3 @@ const _signUp = async () => {
   await signUp(username.value, email.value, password.value);
 };
 </script>
-
-<style scoped>
-</style>

@@ -90,6 +90,3 @@ const applyFilter = () => {
   emit('taskFetch', filterStartDate.value, filterEndDate.value);
 };
 </script>
-
-<style scoped>
-</style>

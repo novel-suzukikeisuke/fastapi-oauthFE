@@ -42,16 +42,13 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useUser } from '~/composables/useUser';
+import { UserRole } from '~/constants/userRole';
 import updateDialog from '~/components/users/updateDialog.vue';
 import disabledDialog from '~/components/users/disabledDialog.vue';
-import { UserRole } from '~/constants/userRole';
 
 const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
 
-// ページがマウントされたらユーザー情報を取得
-onMounted(fetchUsers);
+onMounted(async () => {
+  await fetchUsers();
+});
 </script>
-
-<style scoped>
-</style>

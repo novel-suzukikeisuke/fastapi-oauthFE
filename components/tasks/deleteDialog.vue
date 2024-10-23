@@ -63,6 +63,3 @@ const _deleteTask = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

@@ -1,8 +1,8 @@
 import { ref } from 'vue';
 import { apiBaseUrl } from '../config';
-import type { TaskResponse, PaginatedTasksResponse } from '~/types/task';
 import { useAuthStore } from '~/store/auth';
 import { TaskPagination } from '~/constants/taskPagination';
+import type { TaskResponse, PaginatedTasksResponse } from '~/types/task';
 
 export const useTask = () => {
   const tasks = ref<TaskResponse[]>([]);

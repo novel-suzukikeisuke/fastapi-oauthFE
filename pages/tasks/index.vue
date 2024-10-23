@@ -130,7 +130,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useTask } from '~/composables/useTask';
+import { TaskCompleted } from '~/constants/taskCompleted';
+import { TagColor } from '~/constants/tagColor';
 import createDialog from '~/components/tasks/createDialog.vue';
 import updateDialog from '~/components/tasks/updateDialog.vue';
 import deleteDialog from '~/components/tasks/deleteDialog.vue';
@@ -139,8 +140,6 @@ import completeFilter from '~/components/tasks/filterComplete.vue';
 import dateFilter from '~/components/tasks/filterDate.vue';
 import searchDialog from '~/components/tasks/searchDialog.vue';
 import imgDialog from '~/components/tasks/imgDialog.vue';
-import { TaskCompleted } from '~/constants/taskCompleted';
-import { TagColor } from '~/constants/tagColor';
 
 const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask();
 

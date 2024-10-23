@@ -51,6 +51,3 @@ const _login = async () => {
   await login(username.value, password.value);
 };
 </script>
-
-<style scoped>
-</style>

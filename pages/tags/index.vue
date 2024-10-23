@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useTag } from '~/composables/useTag';
 import { TagColor } from '~/constants/tagColor';
 import createDialog from '~/components/tags/createDialog.vue';
 import updateDialog from '~/components/tags/updateDialog.vue';
@@ -50,8 +49,7 @@ const headers = [
   { title: '操作', value: 'actions', sortable: false },
 ];
 
-onMounted(fetchTags);
+onMounted(async () => {
+  await fetchTags();
+});
 </script>
-
-<style scoped>
-</style>

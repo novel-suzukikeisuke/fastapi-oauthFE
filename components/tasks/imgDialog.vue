@@ -38,8 +38,4 @@ const props = defineProps<{
     file_path: string
   };
 }>();
-
 </script>
-
-<style scoped>
-</style>

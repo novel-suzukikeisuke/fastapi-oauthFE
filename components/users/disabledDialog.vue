@@ -63,6 +63,3 @@ const _updateUserDisabled = async () => {
   }
 };
 </script>
-
-<style scoped>
-</style>

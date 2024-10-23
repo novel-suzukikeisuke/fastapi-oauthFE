@@ -33,6 +33,8 @@ import { ref, computed, defineProps } from 'vue';
 import { useAuth } from '~/composables/useAuth'; // useAuthをインポート
 import { UserRole } from '~/constants/userRole';
 
+const { logOut } = useAuth(); // logOutを取得
+
 // propsを受け取る
 // user プロップを受け取る
 const props = defineProps<{
@@ -44,8 +46,6 @@ const props = defineProps<{
     role: number;
   };
 }>();
-
-const { logOut } = useAuth(); // logOutを取得
 
 // メニュー項目を定義
 const menuItems = ref([
@@ -61,6 +61,3 @@ const filteredMenuItems = computed(() => {
   });
 });
 </script>
-
-<style scoped>
-</style>

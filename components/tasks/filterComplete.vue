@@ -49,16 +49,11 @@ const completedStatusOptions = [
   { title: '処理中', value: TaskCompleted.IN_PROGRESS },
   { title: '完了', value: TaskCompleted.COMPLETED },
 ];
+
 const applyFilter = () => {
   filterCompleted.value = selectedCompleteId.value;
   isActive.value = false;
   selectedCompleteId.value = null;
   emit('taskFetch', filterCompleted.value);
 };
-
 </script>
-
-<style scoped>
-</style>
-
-

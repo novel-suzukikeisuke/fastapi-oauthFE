@@ -34,7 +34,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 const emit = defineEmits(['update:file']);
+
 const isEnter = ref<boolean>(false);
 const file = ref<File | null>(null);
 
@@ -44,12 +46,10 @@ const dragEnter = (event: DragEvent) => {
   event.preventDefault();
   isEnter.value = true;
 };
-
 // ファイルが枠外に出た時に.enterを適用させない
 const dragLeave = () => {
   isEnter.value = false;
 };
-
 // event.dataTransfer.files: ファイル情報を取得することができる
 // ドロップしたファイルが2つ以上の場合に後から追加した 単一ファイルを格納する
 const dropFile = (event: DragEvent) => {
@@ -60,7 +60,6 @@ const dropFile = (event: DragEvent) => {
   }
   isEnter.value = false; // ドロップ後にエリアの状態をリセット
 };
-
 // ファイルを削除する関数
 const removeFile = () => {
   file.value = null; // ファイルをnullに設定して削除

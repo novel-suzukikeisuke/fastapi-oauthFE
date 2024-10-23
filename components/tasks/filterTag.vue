@@ -50,8 +50,4 @@ const applyFilter = () => {
   selectedTagId.value = null;
   emit('taskFetch', filterTagId.value);
 };
-
 </script>
-
-<style scoped>
-</style>
