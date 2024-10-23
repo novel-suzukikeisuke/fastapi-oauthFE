@@ -22,7 +22,7 @@ export const useAuth = () => {
         authStore.setToken(data.access_token);
         navigateTo('/tasks')
       } else {
-        alert(data.error)
+        alert(data.detail)
       }
     } catch (error) {
       console.error('An error occurred:', error)
