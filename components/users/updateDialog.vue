@@ -103,7 +103,6 @@ const _updateUser = async () => {
     emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
-
 </script>
 
 <style scoped>
