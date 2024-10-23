@@ -46,10 +46,9 @@
             label="関連タグ"
             item-title="name"
             item-value="id"
-            :items="tagsItems"
+            :items="availableTags"
             prepend-icon="mdi mdi-tag"
             multiple
-            @change="updateSelectedTags"
           ></v-select>
           <fileSelection v-model:file="file" />
         </v-form>
@@ -100,9 +99,8 @@ const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // props.task.ta
 const file = ref<File | null>(null); // アップロードファイルを管理するref
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
-const tagsItems = ref<TagResponse[]>([]);// タグのリストを格納するためのref
 
-const { fetchTags, tags: fetchedTags } = useTag();
+const { fetchTags, tags: availableTags } = useTag();
 
 // バリデーションルール
 // v : 検証対象の値
@@ -111,11 +109,6 @@ const { fetchTags, tags: fetchedTags } = useTag();
 const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります';
 const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります';
 
-//tagsItemsから選択されたタグオブジェクトがselectedTags
-const updateSelectedTags = (selectedTags: TagResponse[]) => {
-  tags.value = selectedTags.map(tag => tag.id);; // 選択されたタグのオブジェクトをセット
-};
-
 const _updateTask = async () => {
   const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value, file.value); // IDの配列を送信
   if (success) {
@@ -123,11 +116,6 @@ const _updateTask = async () => {
     emit('taskFetch'); // 更新成功時にイベントを発火
   }
 };
-
-onMounted(async () => {
-  await fetchTags();
-  tagsItems.value = fetchedTags.value; // 取得したタグを格納
-});
 </script>
 
 <style scoped>

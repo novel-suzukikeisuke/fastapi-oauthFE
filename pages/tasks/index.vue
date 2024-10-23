@@ -143,7 +143,6 @@ import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
 const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask();
-const { fetchTags, tags } = useTag();
 
 const showAllButton = ref(true);
 const showPagination = ref(false);
@@ -188,7 +187,6 @@ onMounted(async () => {
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
   await fetchTasks();
-  await fetchTags(); // タグを取得
 });
 
 onUnmounted(() => {
