@@ -24,7 +24,7 @@ export const useTask = () => {
       if (file) {
         formData.append('file', file); // ファイルを追加
       }
-      const response = await fetch(`${apiBaseUrl}/api/task_create`, {
+      const response = await fetch(`${apiBaseUrl}/api/task/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authStore.token}`
@@ -65,16 +65,7 @@ export const useTask = () => {
         tasks.value = data.tasks;
         totalTasks.value = data.total_tasks;
       } else {
-        switch (response.status) {
-          case 404:
-            alert('タスクが登録されていません。タスクを登録してください。');
-            break;
-          case 500:
-            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
-            break;
-          default:
-            alert('タスクの取得に失敗しました。');
-        }
+        alert(data.detail)
       }
     } catch (err) {
       console.error('An error occurred:', err);
@@ -105,7 +96,7 @@ export const useTask = () => {
       if (file) {
         formData.append('file', file); // ファイルを追加
       }
-      const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
+      const response = await fetch(`${apiBaseUrl}/api/task/update?task_id=${taskId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`
@@ -126,7 +117,7 @@ export const useTask = () => {
 
   const deleteTask = async (taskId: number) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tasks/delete?task_id=${taskId}`, {
+      const response = await fetch(`${apiBaseUrl}/api/task/delete?task_id=${taskId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
@@ -180,7 +171,7 @@ export const useTask = () => {
 
   const downloadFile = async (filename: string) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tasks/download/${filename}`, {
+      const response = await fetch(`${apiBaseUrl}/api/task/download/${filename}`, {
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
         },

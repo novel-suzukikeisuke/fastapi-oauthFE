@@ -101,7 +101,7 @@ export const useUser = () => {
 
   const updateUserDisabled = async (userId: number, disabled: boolean) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/users/disabled?user_id=${userId}`, {
+      const response = await fetch(`${apiBaseUrl}/api/user/disabled?user_id=${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,

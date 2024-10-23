@@ -9,7 +9,7 @@ export const useTag = () => {
 
   const createTag = async (name: string, color: number) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tags/create`, {
+      const response = await fetch(`${apiBaseUrl}/api/tag/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
@@ -62,7 +62,7 @@ export const useTag = () => {
 
   const updateTag = async (tagId: number, name: string, color: number) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tags/update?tag_id=${tagId}`, {
+      const response = await fetch(`${apiBaseUrl}/api/tag/update?tag_id=${tagId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
@@ -87,7 +87,7 @@ export const useTag = () => {
 
   const deleteTag = async (tagId: number) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/tags/delete?tag_id=${tagId}`, {
+      const response = await fetch(`${apiBaseUrl}/api/tag/delete?tag_id=${tagId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
