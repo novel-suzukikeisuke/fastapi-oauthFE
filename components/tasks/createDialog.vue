@@ -4,15 +4,15 @@
     <v-btn
       v-bind="activatorProps"
       color="surface-variant"
-      text="編集"
+      text="タスク追加"
       variant="flat"
-      @click="fetchTags"
+      size="large"
     ></v-btn>
   </template>
 
   <template v-slot:default="{ isActive }">
     <v-card>
-      <v-card-title class="text-h5">タスク編集</v-card-title>
+      <v-card-title class="text-h5">タスク追加</v-card-title>
       <v-card-item>
         <v-form v-model="valid">
           <v-text-field
@@ -30,25 +30,14 @@
             prepend-icon="mdi mdi-book-open-variant-outline"
           ></v-text-field>
           <v-select
-            v-model="completed"
-            label="完了状態"
-            item-title="title"
-            item-value="value"
-            :items="[
-                { title: '未対応', value: TaskCompleted.NOT_STARTED },
-                { title: '処理中', value: TaskCompleted.IN_PROGRESS },
-                { title: '完了', value: TaskCompleted.COMPLETED }
-              ]"
-            prepend-icon="mdi mdi-briefcase-outline"
-          ></v-select>
-          <v-select
             v-model="tags"
             label="関連タグ"
             item-title="name"
             item-value="id"
             :items="tagsItems"
-            prepend-icon="mdi mdi-tag"
+            :rules="[tagsRules]"
             multiple
+            prepend-icon="mdi mdi-tag"
             @change="updateSelectedTags"
           ></v-select>
           <fileSelection v-model:file="file" />
@@ -57,8 +46,8 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          text="編集"
-          @click="_updateTask"
+          text="保存"
+          @click="_createTask"
           :disabled="!valid"
         ></v-btn>
         <v-btn
@@ -72,31 +61,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
-import type { TagResponse } from '~/types/tag';
-import { TaskCompleted } from '~/constants/taskCompleted';
 import fileSelection from './fileSelection.vue';
+import type { TagResponse } from '~/types/tag';
 
-const { updateTask } = useTask();
-
-const props = defineProps<{
-  task: {
-    id: number;
-    title: string;
-    description: string;
-    completed: number;
-    tags: TagResponse[];
-  };
-}>();
+const { createTask } = useTask();
 
 const emit = defineEmits(['taskFetch']);
 
-const title = ref<string>(props.task.title);
-const description = ref<string>(props.task.description);
-const completed = ref<number>(props.task.completed);
-const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // props.task.tagsの配列から各tagのidプロパティを取得し、それを新しい配列としてtagsに格納
+const title = ref<string>('');
+const description = ref<string>('');
+const tags = ref<number[]>([]);
 const file = ref<File | null>(null); // アップロードファイルを管理するref
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
@@ -108,17 +85,22 @@ const { fetchTags, tags: fetchedTags } = useTag();
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります';
-const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります';
+const titleRules = (v: string) => (!!v && v.length <= 20)  || 'タイトルは必須で、20文字以内である必要があります';
+const descriptionRules = (v: string) =>(!!v && v.length <= 50) || '説明は必須で、50文字以内である必要があります';
+const tagsRules = (v: number[]) => v.length > 0 || '少なくとも1つのタグを選択してください';
+
 
 //tagsItemsから選択されたタグオブジェクトがselectedTags
 const updateSelectedTags = (selectedTags: TagResponse[]) => {
   tags.value = selectedTags.map(tag => tag.id);; // 選択されたタグのオブジェクトをセット
 };
 
-const _updateTask = async () => {
-  const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value, file.value); // IDの配列を送信
+const _createTask = async () => {
+  const success = await createTask(title.value, description.value, tags.value, file.value); // IDの配列を送信
   if (success) {
+    title.value = '';
+    description.value = '';
+    tags.value = [];
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
     emit('taskFetch'); // 更新成功時にイベントを発火
   }

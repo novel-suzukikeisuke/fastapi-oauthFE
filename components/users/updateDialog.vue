@@ -88,13 +88,15 @@ const role = ref<number>(props.user.role)
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const nameRules = (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります';
-const emailRules = (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります';
-const passwordRules = (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります';
+const nameRules = (v: string) => (!!v && v.length <= 20) || 'ユーザー名は必須で、20文字以内である必要があります'; // 空欄禁止 & 20文字以内
+const emailRules = (v: string) => (!!v && v.length <= 50 && emailPattern.test(v)) || 'メールアドレスは必須で、正しいメールアドレスを50文字以内で入力してください'; // 空欄禁止 & EmailStr & 50文字以内
+const passwordRules = (v: string) => (!!v && v.length >= 4 && v.length <= 10) || 'パスワードは4文字以上10文字以内である必要があります'; // 空欄禁止 & 4文字以上10文字以内
 
 const _updateUser = async () => {
   const success = await updateUser(props.user.id, username.value, email.value, password.value, role.value);
@@ -103,7 +105,6 @@ const _updateUser = async () => {
     emit('userFetch'); // 更新成功時にイベントを発火
   }
 };
-
 </script>
 
 <style scoped>

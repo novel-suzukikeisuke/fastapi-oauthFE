@@ -4,8 +4,17 @@ export type TaskResponse = {
   id: number;
   title: string;
   description: string;
-  completed: boolean;
+  completed: number;
+  file_path: string;
   user_id: number;
   tags: TagResponse[];
-  error?: string;
+  detail?: string;
+};
+
+export type PaginatedTasksResponse = {
+  total_tasks: number;
+  page: number;
+  limit: number;
+  tasks: TaskResponse[];
+  detail?: string;
 };
