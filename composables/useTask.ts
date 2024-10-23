@@ -15,19 +15,21 @@ export const useTask = () => {
   const totalTasks = ref<number>(TaskPagination.TOTAL_TASK);
   const authStore = useAuthStore();
 
-  const createTask = async (title: string, description: string, tags: number[]) => {
+  const createTask = async (title: string, description: string, tags: number[], file: File | null) => {
     try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
+      if (file) {
+        formData.append('file', file); // ファイルを追加
+      }
       const response = await fetch(`${apiBaseUrl}/api/task_create`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${authStore.token}`
         },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          tags: tags
-        })
+        body: formData
       })
       const data: TaskResponse = await response.json()
       if (response.ok) {
@@ -63,7 +65,16 @@ export const useTask = () => {
         tasks.value = data.tasks;
         totalTasks.value = data.total_tasks;
       } else {
-        alert(data.detail || 'タスクが存在しません');
+        switch (response.status) {
+          case 404:
+            alert('タスクが登録されていません。タスクを登録してください。');
+            break;
+          case 500:
+            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
+            break;
+          default:
+            alert('タスクの取得に失敗しました。');
+        }
       }
     } catch (err) {
       console.error('An error occurred:', err);
@@ -84,20 +95,22 @@ export const useTask = () => {
     await fetchTasks();
   };
 
-  const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[]) => {
+  const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[], file: File | null) => {
     try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('completed', completed.toString())
+      formData.append('tags', JSON.stringify(tags)); // タグをJSON文字列として送信
+      if (file) {
+        formData.append('file', file); // ファイルを追加
+      }
       const response = await fetch(`${apiBaseUrl}/api/tasks/update?task_id=${taskId}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${authStore.token}`
         },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          completed: completed,
-          tags: tags
-        })
+        body: formData
       })
       const data: TaskResponse = await response.json()
       if (response.ok) {
@@ -165,6 +178,35 @@ export const useTask = () => {
     }
   };
 
+  const downloadFile = async (filename: string) => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/tasks/download/${filename}`, {
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+        },
+      });
+      // ステータスコードがOKかどうかを確認
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // Blobオブジェクトを作成
+      const blob = await response.blob();
+      // ダウンロード用のURLを作成
+      const url = window.URL.createObjectURL(blob);
+      // aタグを作成してクリックをシミュレート
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename); // ダウンロード属性付与、ダウンロード時のファイル名を指定
+      document.body.appendChild(link);
+      link.click();
+      // 要素を削除し、メモリを解放
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
+
   return {
     createTask,
     fetchTasks,
@@ -173,6 +215,7 @@ export const useTask = () => {
     updateTask,
     deleteTask,
     searchTasks,
+    downloadFile,
     tasks,
     totalTasks,
     page,

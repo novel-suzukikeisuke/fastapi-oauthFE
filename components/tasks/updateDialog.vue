@@ -20,12 +20,14 @@
             :rules="[titleRules]"
             :counter="20"
             label="タイトル"
+            prepend-icon="mdi mdi-pencil"
           ></v-text-field>
           <v-text-field
             v-model="description"
             :rules="[descriptionRules]"
             :counter="50"
             label="説明"
+            prepend-icon="mdi mdi-book-open-variant-outline"
           ></v-text-field>
           <v-select
             v-model="completed"
@@ -37,6 +39,7 @@
                 { title: '処理中', value: TaskCompleted.IN_PROGRESS },
                 { title: '完了', value: TaskCompleted.COMPLETED }
               ]"
+            prepend-icon="mdi mdi-briefcase-outline"
           ></v-select>
           <v-select
             v-model="tags"
@@ -44,9 +47,11 @@
             item-title="name"
             item-value="id"
             :items="tagsItems"
+            prepend-icon="mdi mdi-tag"
             multiple
             @change="updateSelectedTags"
           ></v-select>
+          <fileSelection v-model:file="file" />
         </v-form>
       </v-card-item>
       <v-card-actions>
@@ -72,6 +77,7 @@ import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
 import type { TagResponse } from '~/types/tag';
 import { TaskCompleted } from '~/constants/taskCompleted';
+import fileSelection from './fileSelection.vue';
 
 const { updateTask } = useTask();
 
@@ -91,6 +97,7 @@ const title = ref<string>(props.task.title);
 const description = ref<string>(props.task.description);
 const completed = ref<number>(props.task.completed);
 const tags = ref<number[]>(props.task.tags.map(tag => tag.id)); // props.task.tagsの配列から各tagのidプロパティを取得し、それを新しい配列としてtagsに格納
+const file = ref<File | null>(null); // アップロードファイルを管理するref
 const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 const tagsItems = ref<TagResponse[]>([]);// タグのリストを格納するためのref
@@ -110,7 +117,7 @@ const updateSelectedTags = (selectedTags: TagResponse[]) => {
 };
 
 const _updateTask = async () => {
-  const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value); // IDの配列を送信
+  const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value, file.value); // IDの配列を送信
   if (success) {
     isActive.value = false; // 更新が成功した場合にモーダルを閉じる
     emit('taskFetch'); // 更新成功時にイベントを発火

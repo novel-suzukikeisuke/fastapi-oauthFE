@@ -96,6 +96,14 @@
             </v-chip>
           </v-card-text>
           <v-card-actions>
+            <imgDialog :task />
+            <v-btn
+              color="surface-variant"
+              variant="flat"
+              @click="downloadFile(task.file_path.replace('uploads/', ''))"
+            >
+              ダウンロード
+            </v-btn>
             <v-spacer />
             <updateDialog :task="task" @taskFetch="fetchTasks" />
             <deleteDialog :task="task" @taskFetch="fetchTasks" />
@@ -130,10 +138,11 @@ import tagFilter from '~/components/tasks/filterTag.vue';
 import completeFilter from '~/components/tasks/filterComplete.vue';
 import dateFilter from '~/components/tasks/filterDate.vue';
 import searchDialog from '~/components/tasks/searchDialog.vue';
+import imgDialog from '~/components/tasks/imgDialog.vue';
 import { TaskCompleted } from '~/constants/taskCompleted';
 import { TagColor } from '~/constants/tagColor';
 
-const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks } = useTask();
+const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask();
 const { fetchTags, tags } = useTag();
 
 const showAllButton = ref(true);
@@ -146,7 +155,7 @@ const totalPages = computed(() => {
 /* 600pxより小さければshowAllButtonsをtrueに設定し、それ以外の場合はfalseに設定 */
 const checkScreenSize = () => {
   showAllButton.value = window.innerWidth < 600;
-  showPagination.value = window.innerWidth > 600;
+  showPagination.value = window.innerWidth >= 600;
 };
 
 const handleTagFilter = (selected: number) => {
