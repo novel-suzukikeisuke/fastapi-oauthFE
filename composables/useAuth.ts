@@ -20,9 +20,9 @@ export const useAuth = () => {
       const data: AuthResponse = await response.json()
       if (response.ok) {
         authStore.setToken(data.access_token);
-        navigateTo('/user')
+        navigateTo('/tasks')
       } else {
-        alert(data.error)
+        alert(data.detail)
       }
     } catch (error) {
       console.error('An error occurred:', error)
@@ -31,7 +31,7 @@ export const useAuth = () => {
 
   const logOut = async () => {
     authStore.logout();
-    navigateTo('/auth/login');
+    navigateTo('/');
   };
 
   return {
