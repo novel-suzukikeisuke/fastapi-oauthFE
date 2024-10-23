@@ -45,7 +45,7 @@ const props = defineProps<{
     id: number;
     name: string;
     color: number;
-    user_is: number;
+    user_id: number;
   };
 }>();
 
