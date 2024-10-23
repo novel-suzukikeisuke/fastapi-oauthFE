@@ -35,16 +35,12 @@
             item-title="name"
             item-value="id"
             :items="tagsItems"
+            :rules="[tagsRules]"
             multiple
             prepend-icon="mdi mdi-tag"
             @change="updateSelectedTags"
           ></v-select>
-          <v-file-input
-            v-model="file"
-            label="ファイルを選択してください"
-            accept=".png,.jpg,.jpeg,.pdf"
-            outlined
-          ></v-file-input>
+          <fileSelection v-model:file="file" />
         </v-form>
       </v-card-item>
       <v-card-actions>
@@ -65,9 +61,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useTask } from '~/composables/useTask';
 import { useTag } from '~/composables/useTag';
+import fileSelection from './fileSelection.vue';
 import type { TagResponse } from '~/types/tag';
 
 const { createTask } = useTask();
@@ -88,8 +85,10 @@ const { fetchTags, tags: fetchedTags } = useTag();
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります';
-const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります';
+const titleRules = (v: string) => (!!v && v.length <= 20)  || 'タイトルは必須で、20文字以内である必要があります';
+const descriptionRules = (v: string) =>(!!v && v.length <= 50) || '説明は必須で、50文字以内である必要があります';
+const tagsRules = (v: number[]) => v.length > 0 || '少なくとも1つのタグを選択してください';
+
 
 //tagsItemsから選択されたタグオブジェクトがselectedTags
 const updateSelectedTags = (selectedTags: TagResponse[]) => {

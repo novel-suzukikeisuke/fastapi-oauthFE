@@ -155,7 +155,7 @@ const totalPages = computed(() => {
 /* 600pxより小さければshowAllButtonsをtrueに設定し、それ以外の場合はfalseに設定 */
 const checkScreenSize = () => {
   showAllButton.value = window.innerWidth < 600;
-  showPagination.value = window.innerWidth > 600;
+  showPagination.value = window.innerWidth >= 600;
 };
 
 const handleTagFilter = (selected: number) => {

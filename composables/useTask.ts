@@ -65,7 +65,16 @@ export const useTask = () => {
         tasks.value = data.tasks;
         totalTasks.value = data.total_tasks;
       } else {
-        alert(data.detail || 'タスクが存在しません');
+        switch (response.status) {
+          case 404:
+            alert('タスクが登録されていません。タスクを登録してください。');
+            break;
+          case 500:
+            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
+            break;
+          default:
+            alert('タスクの取得に失敗しました。');
+        }
       }
     } catch (err) {
       console.error('An error occurred:', err);
