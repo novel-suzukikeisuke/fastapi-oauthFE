@@ -39,20 +39,11 @@ export const useTag = () => {
           'Authorization': `Bearer ${authStore.token}`
         },
       });
-      const data: TagResponse[] = await response.json();  // データを先に取得しておく
+      const data = await response.json();  // データを先に取得しておく
       if (response.ok) {
         tags.value = data;
       } else {
-        switch (response.status) {
-          case 404:
-            alert('タグが登録されていません。タグを登録してください。');
-            break;
-          case 500:
-            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
-            break;
-          default:
-            alert('タグの取得に失敗しました。');
-        }
+        alert(data.detail);
       }
     } catch (error) {
       console.error('An error occurred:', error);
