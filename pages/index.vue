@@ -5,7 +5,7 @@
   >
     <v-card-title class="text-h5">ログイン</v-card-title>
     <v-card-text>
-      <v-form @submit.prevent="_login">
+      <v-form @submit.prevent="_login" v-model="valid">
         <v-text-field
           label="ユーザーネーム"
           v-model="username"
@@ -22,6 +22,7 @@
           type="submit"
           block
           class="mt-4"
+          :disabled="!valid"
         >
           ログイン
         </v-btn>
@@ -44,6 +45,7 @@ const { login } = useAuth();
 
 const username = ref<string>('');
 const password = ref<string>('');
+const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
 
 const _login = async () => {
   await login(username.value, password.value);

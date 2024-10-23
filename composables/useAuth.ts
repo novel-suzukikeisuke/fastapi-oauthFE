@@ -22,12 +22,25 @@ export const useAuth = () => {
         authStore.setToken(data.access_token);
         navigateTo('/tasks')
       } else {
-        alert(data.detail)
+        switch (response.status) {
+          case 401:
+            alert('無効なリクエストです。パスワードを確認してください。');
+            break;
+          case 404:
+            alert('無効なリクエストです。ユーザー名を確認してください。');
+            break;
+          case 500:
+            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
+            break;
+          default:
+            alert('ログインに失敗しました。');
+        }
       }
     } catch (error) {
-      console.error('An error occurred:', error)
+      console.error('An error occurred:', error);
+      alert('ネットワークエラーが発生しました。');
     }
-  }
+  };
 
   const logOut = async () => {
     authStore.logout();

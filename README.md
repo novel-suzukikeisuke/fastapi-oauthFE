@@ -1,75 +1,46 @@
-# Nuxt 3 Minimal Starter
+# プロジェクト名
+このプロジェクトは、タスク管理を簡単に行うためのウェブアプリケーションです。ユーザーはタスクの作成、編集、削除ができ、タスクに関連づけるタグの作成、編集、削除することも可能です。管理ユーザーはユーザーの作成、編集、削除することも可能
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## 技術スタック
+- Nuxt.js 3.13.0
+- Vue 3.5.10
+- Vuetify 3.7.2
 
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# npm
+## セットアップ
+1. リポジトリをクローン。
+```
+git clone https://github.com/novel-suzukikeisuke/fastapi-oauthFE.git
+```
+2. 依存関係をインストール
+```
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+3. アプリを起動
+```
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## プロジェクト構造
+1. components/    # 再利用可能なコンポーネント
+2. composables/   # 再利用可能な関数
+3. constants/     # マジックナンバー定義
+4. layouts/       # 共通のレイアウト
+5. middleware/    # ユーザーの役割に応じたページ遷移制限
+6. pages/         # 各ページのコンポーネント
+7. store/         # 状態管理ファイル (Pinia)
+8. types/         # 型注釈ファイル (TypeScript)
 
-Build the application for production:
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+## 環境変数
+```
+VITE_API_BASE_URL = APIのベースURL
 ```
 
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 主要機能
+- 認証(ログイン、ログアウト)
+- ユーザー管理機能
+  - 登録、一覧表示、編集、論理削除
+- タスク管理機能
+  - 登録、一覧表示、編集、削除、ファイルアップロード（ドラッグ&ドロップ対応）
+- タグ管理機能
+  - 登録、一覧表示、編集、削除
