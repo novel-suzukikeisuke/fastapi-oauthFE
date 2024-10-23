@@ -43,11 +43,20 @@ export const useTag = () => {
       if (response.ok) {
         tags.value = data;
       } else {
-        alert(data[0]?.detail || '不明なエラーが発生しました');
+        switch (response.status) {
+          case 404:
+            alert('タグが登録されていません。タグを登録してください。');
+            break;
+          case 500:
+            alert('サーバー内部エラーが発生しました。しばらくしてから再度お試しください。');
+            break;
+          default:
+            alert('タグの取得に失敗しました。');
+        }
       }
-    } catch (err) {
-      console.error('An error occurred:', err);
-      alert('タスクの取得に失敗しました');
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('ネットワークエラーが発生しました。');
     }
   };
 
