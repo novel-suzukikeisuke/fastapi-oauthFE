@@ -16,7 +16,7 @@
           <v-form>
             <v-text-field
               v-model="title"
-              label="タグ名を入力してください"
+              label="タイトルを入力してください"
             ></v-text-field>
             <v-text-field
               v-model="description"
