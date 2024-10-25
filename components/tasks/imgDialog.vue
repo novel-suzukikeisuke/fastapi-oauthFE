@@ -6,7 +6,6 @@
       color="surface-variant"
       text="添付資料"
       variant="flat"
-      width="100"
     ></v-btn>
   </template>
 

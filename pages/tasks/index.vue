@@ -7,7 +7,7 @@
       </v-col>
     </v-row>
     <v-row class="d-flex align-center">
-      <v-col cols="12" md="3" sm="12">
+      <v-col cols="9" lg="3" md="4" sm="9">
         <v-card
           variant="tonal"
         >
@@ -27,7 +27,7 @@
         </v-card>
       </v-col>
       <v-spacer />
-      <v-col cols="12" md="2" sm="12" class="d-flex justify-end">
+      <v-col cols="2" lg="3" md="2" sm="2" class="d-flex justify-end">
         <searchDialog @taskSearch="handleSearch" />
       <v-btn
         color="surface-variant"
@@ -96,17 +96,27 @@
             </v-chip>
           </v-card-text>
           <v-card-actions>
-            <imgDialog :task />
-            <v-btn
-              color="surface-variant"
-              variant="flat"
-              @click="downloadFile(task.file_path.replace('uploads/', ''))"
-            >
-              ダウンロード
-            </v-btn>
-            <v-spacer />
-            <updateDialog :task="task" @taskFetch="fetchTasks" />
-            <deleteDialog :task="task" @taskFetch="fetchTasks" />
+            <v-row>
+              <v-col cols="12" md="auto">
+                <imgDialog :task="task" />
+              </v-col>
+              <v-col cols="12" md="auto">
+                <v-btn
+                  color="surface-variant"
+                  variant="flat"
+                  @click="downloadFile(task.file_path.replace('uploads/', ''))"
+                >
+                  ダウンロード
+                </v-btn>
+              </v-col>
+              <v-spacer />
+              <v-col cols="12" md="auto">
+                <updateDialog :task="task" @taskFetch="fetchTasks" />
+              </v-col>
+              <v-col cols="12" md="auto">
+                <deleteDialog :task="task" @taskFetch="fetchTasks" />
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-col>
