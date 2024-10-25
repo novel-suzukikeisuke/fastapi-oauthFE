@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" class="d-flex justify-space-between align-center">
         <h1>タスク一覧</h1>
-        <createDialog @taskFetch="fetchTasks" />
+        <createDialog @task-fetch="fetchTasks" />
       </v-col>
     </v-row>
     <v-row class="d-flex align-center">
@@ -14,13 +14,13 @@
           <v-card-item>
             <v-row>
               <v-col cols="4" class="d-flex justify-center">
-                <tagFilter @taskFetch="handleTagFilter" />
+                <tagFilter @task-fetch="handleTagFilter" />
               </v-col>
               <v-col cols="4" class="d-flex justify-center">
-                <completeFilter @taskFetch="handleCompleteFilter" />
+                <completeFilter @task-fetch="handleCompleteFilter" />
               </v-col>
               <v-col cols="4" class="d-flex justify-center">
-                <dateFilter @taskFetch="handleDateFilter" />
+                <dateFilter @task-fetch="handleDateFilter" />
               </v-col>
             </v-row>
           </v-card-item>
@@ -28,14 +28,14 @@
       </v-col>
       <v-spacer />
       <v-col cols="12" md="2" sm="12" class="d-flex justify-end">
-        <searchDialog @taskSearch="handleSearch" />
+        <searchDialog @task-search="handleSearch" />
       <v-btn
         color="surface-variant"
         variant="flat"
-        @click="resetFilters"
         icon="mdi mdi-rotate-right"
         class="ms-2"
-      ></v-btn>
+        @click="resetFilters"
+      />
     </v-col>
     </v-row>
     <v-row>
@@ -91,7 +91,7 @@
               "
               class="ma-1"
             >
-              <v-icon icon="mdi-label" start></v-icon>
+              <v-icon icon="mdi-label" start/>
               {{ tag.name }}
             </v-chip>
           </v-card-text>
@@ -105,8 +105,8 @@
               ダウンロード
             </v-btn>
             <v-spacer />
-            <updateDialog :task="task" @taskFetch="fetchTasks" />
-            <deleteDialog :task="task" @taskFetch="fetchTasks" />
+            <updateDialog :task="task" @task-fetch="fetchTasks" />
+            <deleteDialog :task="task" @task-fetch="fetchTasks" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -130,67 +130,67 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { TaskCompleted } from '~/constants/taskCompleted';
-import { TagColor } from '~/constants/tagColor';
-import createDialog from '~/components/tasks/createDialog.vue';
-import updateDialog from '~/components/tasks/updateDialog.vue';
-import deleteDialog from '~/components/tasks/deleteDialog.vue';
-import tagFilter from '~/components/tasks/filterTag.vue';
-import completeFilter from '~/components/tasks/filterComplete.vue';
-import dateFilter from '~/components/tasks/filterDate.vue';
-import searchDialog from '~/components/tasks/searchDialog.vue';
-import imgDialog from '~/components/tasks/imgDialog.vue';
+import { TaskCompleted } from '~/constants/taskCompleted'
+import { TagColor } from '~/constants/tagColor'
+import createDialog from '~/components/tasks/createDialog.vue'
+import updateDialog from '~/components/tasks/updateDialog.vue'
+import deleteDialog from '~/components/tasks/deleteDialog.vue'
+import tagFilter from '~/components/tasks/filterTag.vue'
+import completeFilter from '~/components/tasks/filterComplete.vue'
+import dateFilter from '~/components/tasks/filterDate.vue'
+import searchDialog from '~/components/tasks/searchDialog.vue'
+import imgDialog from '~/components/tasks/imgDialog.vue'
 
-const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask();
+const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask()
 
-const showAllButton = ref(true);
-const showPagination = ref(false);
+const showAllButton = ref(true)
+const showPagination = ref(false)
 
 const totalPages = computed(() => {
-  return Math.ceil(totalTasks.value / limit.value); // totalTasks を limit で割ったページ数
-});
+  return Math.ceil(totalTasks.value / limit.value) // totalTasks を limit で割ったページ数
+})
 
 /* 600pxより小さければshowAllButtonsをtrueに設定し、それ以外の場合はfalseに設定 */
 const checkScreenSize = () => {
-  showAllButton.value = window.innerWidth < 600;
-  showPagination.value = window.innerWidth >= 600;
-};
+  showAllButton.value = window.innerWidth < 600
+  showPagination.value = window.innerWidth >= 600
+}
 
 const handleTagFilter = (selected: number) => {
-  filterTagId.value = selected;
-  fetchTasks();
-};
+  filterTagId.value = selected
+  fetchTasks()
+}
 const handleCompleteFilter = (selected: number) => {
-  filterCompleted.value = selected;
-  fetchTasks();
-};
+  filterCompleted.value = selected
+  fetchTasks()
+}
 const handleDateFilter = (selectedStart: Date, selectedEnd: Date) => {
-  filterStartDate.value = selectedStart;
-  filterEndDate.value = selectedEnd;
-  fetchTasks();
-};
+  filterStartDate.value = selectedStart
+  filterEndDate.value = selectedEnd
+  fetchTasks()
+}
 
 const resetFilters = () => {
-  filterTagId.value = null;
-  filterCompleted.value = null;
-  filterStartDate.value = null;
-  filterEndDate.value = null;
-  fetchDefaultTasks();
-};
+  filterTagId.value = null
+  filterCompleted.value = null
+  filterStartDate.value = null
+  filterEndDate.value = null
+  fetchDefaultTasks()
+}
 
-const handleSearch = async ({ title, description }: { title: string; description: string }) => {
-  await searchTasks(title, description); // 検索条件を使用してタスクを取得
-};
+const handleSearch = async ({ title, description }: { title: string, description: string }) => {
+  await searchTasks(title, description) // 検索条件を使用してタスクを取得
+}
 
 onMounted(async () => {
-  checkScreenSize();
-  window.addEventListener('resize', checkScreenSize);
-  await fetchTasks();
-});
+  checkScreenSize()
+  window.addEventListener('resize', checkScreenSize)
+  await fetchTasks()
+})
 
 onUnmounted(() => {
-  window.removeEventListener('resize', checkScreenSize);
-});
+  window.removeEventListener('resize', checkScreenSize)
+})
 </script>
 
 <style scoped>

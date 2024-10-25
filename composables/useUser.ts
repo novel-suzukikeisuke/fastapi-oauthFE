@@ -1,76 +1,82 @@
-import { ref } from 'vue';
-import { apiBaseUrl } from '../config';
-import { useAuthStore } from '~/store/auth';
-import type { UserResponse } from '~/types/user';
+import { ref } from 'vue'
+import { apiBaseUrl } from '../config'
+import { useAuthStore } from '~/store/auth'
+import type { UserResponse } from '~/types/user'
 
 export const useUser = () => {
-  const user = ref<UserResponse>();
-  const users = ref<UserResponse[]>([]); // ユーザーリストを格納するref
-  const error = ref<string | null>(null); // エラーを格納するref
-  const authStore = useAuthStore();
+  const user = ref<UserResponse>()
+  const users = ref<UserResponse[]>([]) // ユーザーリストを格納するref
+  const error = ref<string | null>(null) // エラーを格納するref
+  const authStore = useAuthStore()
   const signUp = async (username: string, email: string, password: string) => {
     try {
       const response = await fetch(`${apiBaseUrl}/api/signUp`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: username,
           email: email,
-          password: password
-        })
+          password: password,
+        }),
       })
       const data: UserResponse = await response.json()
       if (response.ok) {
         navigateTo('/')
-      } else  {
+      }
+      else {
         alert(data.detail)
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
+    }
+    catch {
+      alert('新規登録中に不明なエラーが発生しました')
     }
   }
 
   const fetchUser = async () => {
-    if (!authStore.token) return null;
+    if (!authStore.token) return null
     try {
       const response = await fetch(`${apiBaseUrl}/api/user`, {
         headers: {
-          'Authorization': `Bearer ${authStore.token}`
+          Authorization: `Bearer ${authStore.token}`,
         },
-      });
+      })
       if (response.ok) {
-        user.value = await response.json();
-        return user.value;
-      } else {
-        console.error('Failed to fetch user:', response.statusText);
-        return null;
+        user.value = await response.json()
+        return user.value
       }
-    } catch (err) {
-      console.error('Error fetching user:', err);
-      return null;
+      else {
+        alert('ユーザー情報を取得できません')
+        return null
+      }
     }
-  };
+    catch {
+      alert('ユーザー情報取得中に不明なエラーが発生しました')
+      return null
+    }
+  }
 
   const fetchUsers = async () => {
     try {
       const response = await fetch(`${apiBaseUrl}/api/users`, {
         headers: {
-          'Authorization': `Bearer ${authStore.token}`
+          Authorization: `Bearer ${authStore.token}`,
         },
-      });
+      })
 
       if (response.ok) {
-        users.value = await response.json(); // ユーザー情報を取得
-      } else {
-        error.value = `エラー: ${response.status}`;
+        users.value = await response.json() // ユーザー情報を取得
       }
-    } catch (err) {
-      console.error('ユーザー情報の取得に失敗しました', err);
-      error.value = 'ユーザー情報の取得に失敗しました';
+      else {
+        error.value = `エラー: ${response.status}`
+      }
     }
-  };
+    catch {
+      alert('ユーザー一覧取得中に不明なエラーが発生しました')
+      error.value = 'ユーザー情報の取得に失敗しました'
+    }
+  }
 
   const updateUser = async (userId: number, username: string, email: string, password: string, role: number) => {
     try {
@@ -78,24 +84,26 @@ export const useUser = () => {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: username,
           email: email,
           password: password,
-          role: role
-        })
+          role: role,
+        }),
       })
       const data: UserResponse = await response.json()
       if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
+        return true
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
+      else {
+        alert(data.detail)
+        return false
+      }
+    }
+    catch {
+      alert('ユーザー情報更新中に不明なエラーが発生しました')
     }
   }
 
@@ -105,22 +113,24 @@ export const useUser = () => {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          disabled: disabled
-        })
+          disabled: disabled,
+        }),
       })
       const data: UserResponse = await response.json()
       if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
+        return true
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
-      return false;
+      else {
+        alert(data.detail)
+        return false
+      }
+    }
+    catch {
+      alert('ユーザー論理削除中に不明なエラーが発生しました')
+      return false
     }
   }
 
@@ -131,6 +141,6 @@ export const useUser = () => {
     updateUser,
     updateUserDisabled,
     users,
-    user
-  };
-};
+    user,
+  }
+}

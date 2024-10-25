@@ -14,13 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import Header from '~/components/header.vue'; // 修正: 大文字に
+import Header from '~/components/header.vue'
 
-const { fetchUser, user } = useUser(); // fetchUser と user を取得
+const { fetchUser, user } = useUser() // fetchUser と user を取得
 
 onMounted(async () => {
-  await fetchUser(); // コンポーネントがマウントされたときにユーザー情報を取得
-});
+  await fetchUser() // コンポーネントがマウントされたときにユーザー情報を取得
+})
 </script>
 
 <style scoped>

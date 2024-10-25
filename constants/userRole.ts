@@ -1,5 +1,5 @@
-//ユーザーの権限を定義
+// ユーザーの権限を定義
 export const UserRole = {
   ADMIN: 1,
-  USER: 0
-};
+  USER: 0,
+}

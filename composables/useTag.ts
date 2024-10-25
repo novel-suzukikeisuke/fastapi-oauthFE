@@ -1,11 +1,11 @@
-import { ref } from 'vue';
-import { apiBaseUrl } from '../config';
-import type { TagResponse } from '~/types/tag';
-import { useAuthStore } from '~/store/auth';
+import { ref } from 'vue'
+import { apiBaseUrl } from '../config'
+import type { TagResponse } from '~/types/tag'
+import { useAuthStore } from '~/store/auth'
 
 export const useTag = () => {
-  const tags = ref<TagResponse[]>([]);
-  const authStore = useAuthStore();
+  const tags = ref<TagResponse[]>([])
+  const authStore = useAuthStore()
 
   const createTag = async (name: string, color: number) => {
     try {
@@ -13,22 +13,24 @@ export const useTag = () => {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: name,
-          color: color
-        })
+          color: color,
+        }),
       })
       const data: TagResponse = await response.json()
       if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
+        return true
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
+      else {
+        alert(data.detail)
+        return false
+      }
+    }
+    catch {
+      alert('タグ登録中に不明なエラーが発生しました。')
     }
   }
 
@@ -36,20 +38,21 @@ export const useTag = () => {
     try {
       const response = await fetch(`${apiBaseUrl}/api/tags`, {
         headers: {
-          'Authorization': `Bearer ${authStore.token}`
+          Authorization: `Bearer ${authStore.token}`,
         },
-      });
-      const data = await response.json();  // データを先に取得しておく
+      })
+      const data = await response.json() // データを先に取得しておく
       if (response.ok) {
-        tags.value = data;
-      } else {
-        alert(data.detail);
+        tags.value = data
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
-      alert('ネットワークエラーが発生しました。');
+      else {
+        alert(data.detail)
+      }
     }
-  };
+    catch {
+      alert('タグ一覧取得中に不明なエラーが発生しました。')
+    }
+  }
 
   const updateTag = async (tagId: number, name: string, color: number) => {
     try {
@@ -57,22 +60,24 @@ export const useTag = () => {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: name,
-          color: color
-        })
+          color: color,
+        }),
       })
       const data: TagResponse = await response.json()
       if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
+        return true
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
+      else {
+        alert(data.detail)
+        return false
+      }
+    }
+    catch {
+      alert('タグ更新中に不明なエラーが発生しました。')
     }
   }
 
@@ -82,18 +87,20 @@ export const useTag = () => {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
       if (response.ok) {
-        return true;
-      } else  {
-        const errorData = await response.json(); // エラーデータを取得
-        alert(errorData.detail);
-        return false;
+        return true
       }
-    } catch (error) {
-      console.error('An error occurred:', error)
+      else {
+        const errorData = await response.json() // エラーデータを取得
+        alert(errorData.detail)
+        return false
+      }
+    }
+    catch {
+      alert('タグ削除中に不明なエラーが発生しました。')
     }
   }
 
@@ -102,6 +109,6 @@ export const useTag = () => {
     fetchTags,
     updateTag,
     deleteTag,
-    tags
-  };
-};
+    tags,
+  }
+}

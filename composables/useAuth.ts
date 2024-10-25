@@ -1,9 +1,9 @@
-import { useAuthStore } from '~/store/auth';
-import { apiBaseUrl } from '~/config';
-import type { AuthResponse } from '~/types/login';
+import { useAuthStore } from '~/store/auth'
+import { apiBaseUrl } from '~/config'
+import type { AuthResponse } from '~/types/login'
 
 export const useAuth = () => {
-  const authStore = useAuthStore();
+  const authStore = useAuthStore()
 
   const login = async (username: string, password: string) => {
     try {
@@ -13,30 +13,31 @@ export const useAuth = () => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          'username': username,
-          'password': password,
-        })
+          username: username,
+          password: password,
+        }),
       })
       const data: AuthResponse = await response.json()
       if (response.ok) {
-        authStore.setToken(data.access_token);
+        authStore.setToken(data.access_token)
         navigateTo('/tasks')
-      } else {
-        alert(data.detail);
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
-      alert('不明なエラーが発生しました。');
+      else {
+        alert(data.detail)
+      }
     }
-  };
+    catch {
+      alert('ログイン中に不明なエラーが発生しました。')
+    }
+  }
 
   const logOut = async () => {
-    authStore.logout();
-    navigateTo('/');
-  };
+    authStore.logout()
+    navigateTo('/')
+  }
 
   return {
     login,
-    logOut
-  };
-};
+    logOut,
+  }
+}
