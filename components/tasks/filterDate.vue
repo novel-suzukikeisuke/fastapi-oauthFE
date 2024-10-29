@@ -28,7 +28,14 @@
                     readonly
                   />
                 </template>
-                <v-date-picker v-model="selectedStart" @input="menuStart = false"/>
+                <v-locale-provider locale="ja">
+                  <v-date-picker
+                    v-model="selectedStart"
+                    title="開始日"
+                    header="日付を選択"
+                    @input="menuStart = false"
+                  />
+                </v-locale-provider>
               </v-menu>
             </v-col>
             <v-col class="d-flex justify-center align-center">
@@ -50,7 +57,13 @@
                     readonly
                   />
                 </template>
-                <v-date-picker v-model="selectedEnd" @input="menuEnd = false"/>
+                <v-locale-provider locale="ja">
+                  <v-date-picker
+                    v-model="selectedEnd"
+                    title="終了日"
+                    header="日付を選択"
+                    @input="menuEnd = false"/>
+                </v-locale-provider>
               </v-menu>
             </v-col>
           </v-row>
