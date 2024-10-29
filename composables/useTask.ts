@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { apiBaseUrl } from '../config'
 import { TaskPagination } from '~/constants/taskPagination'
 import type { TaskResponse, PaginatedTasksResponse, SearchTasksRequest } from '~/types/task'

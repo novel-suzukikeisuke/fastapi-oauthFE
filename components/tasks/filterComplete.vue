@@ -34,7 +34,6 @@
 
 <script setup lang="ts">
 import { TaskCompleted } from '~/constants/taskCompleted'
-import BaseButton from '../BaseButton.vue'
 
 const { filterCompleted } = useTask()
 

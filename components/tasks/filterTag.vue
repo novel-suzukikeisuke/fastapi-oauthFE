@@ -34,8 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '../BaseButton.vue'
-
 const { fetchTags, tags } = useTag()
 const { filterTagId } = useTask()
 

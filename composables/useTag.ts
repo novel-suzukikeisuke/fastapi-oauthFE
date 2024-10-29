@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { apiBaseUrl } from '../config'
 import type { TagResponse, CreateTagRequest, UpdateTagRequest } from '~/types/tag'
 

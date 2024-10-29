@@ -33,10 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTag } from '~/composables/useTag'
-import BaseButton from '../BaseButton.vue'
-
 const { deleteTag } = useTag()
 
 const props = defineProps<{

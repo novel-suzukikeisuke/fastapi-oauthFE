@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { UserRole } from '~/constants/userRole'
 import updateDialog from '~/components/users/updateDialog.vue'
 import disabledDialog from '~/components/users/disabledDialog.vue'

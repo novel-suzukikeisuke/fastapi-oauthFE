@@ -14,8 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import Header from '~/components/header.vue'
-
 const { fetchUser, user } = useUser() // fetchUser と user を取得
 
 onMounted(async () => {

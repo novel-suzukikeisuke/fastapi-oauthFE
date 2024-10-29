@@ -48,8 +48,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
 const { signUp } = useUser()
 const { required, maxLength, minLength, validEmail } = validations()
 

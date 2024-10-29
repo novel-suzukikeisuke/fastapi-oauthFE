@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
 import { apiBaseUrl } from '~/config'
-import BaseButton from '../BaseButton.vue'
 
 const isActive = ref<boolean>(false)
 

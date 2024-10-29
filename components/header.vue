@@ -29,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue'
-import { useAuth } from '~/composables/useAuth' // useAuthをインポート
 import { UserRole } from '~/constants/userRole'
 
 const { logOut } = useAuth() // logOutを取得

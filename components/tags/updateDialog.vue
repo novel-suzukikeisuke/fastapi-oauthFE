@@ -51,10 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTag } from '~/composables/useTag'
 import { TagColor } from '~/constants/tagColor'
-import BaseButton from '../BaseButton.vue'
 
 const { updateTag } = useTag()
 const { required, maxLength } = validations()

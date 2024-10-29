@@ -69,8 +69,6 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '../BaseButton.vue'
-
 const { filterStartDate, filterEndDate } = useTask()
 
 const emit = defineEmits(['taskFetch'])

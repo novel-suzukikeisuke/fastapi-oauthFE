@@ -32,10 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTask } from '~/composables/useTask'
 import type { TagResponse } from '~/types/tag'
-import BaseButton from '../BaseButton.vue'
 
 const { deleteTask } = useTask()
 

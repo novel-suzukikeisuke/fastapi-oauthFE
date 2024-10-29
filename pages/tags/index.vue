@@ -10,7 +10,7 @@
     <v-row class="justify-center">
       <v-col cols="8">
         <v-data-table :headers="headers" :items="tags">
-          <template #item.color="{ item }">
+          <template #[`item.color`]="{ item }">
             <v-chip
               :color="
               item.color === TagColor.RED ? 'red' :
@@ -24,7 +24,7 @@
             </v-chip> <!-- 色付きチップ -->
           </template>
 
-          <template #item.actions="{ item }">
+          <template #[`item.actions`]="{ item }">
             <updateDialog :tag="item" @tag-fetch="fetchTags" />
             <deleteDialog :tag="item" @tag-fetch="fetchTags" />
           </template>
@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { TagColor } from '~/constants/tagColor'
 import createDialog from '~/components/tags/createDialog.vue'
 import updateDialog from '~/components/tags/updateDialog.vue'

@@ -33,9 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useUser } from '~/composables/useUser'
-
 const { updateUserDisabled } = useUser()
 
 // user プロップを受け取る

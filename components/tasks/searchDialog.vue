@@ -36,9 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import BaseButton from '../BaseButton.vue'
-
 const emit = defineEmits(['taskSearch'])
 
 const isActive = ref<boolean>(false)

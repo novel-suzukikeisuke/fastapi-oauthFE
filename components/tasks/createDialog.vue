@@ -59,11 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTask } from '~/composables/useTask'
-import { useTag } from '~/composables/useTag'
 import fileSelection from './fileSelection.vue'
-import BaseButton from '../BaseButton.vue'
 
 const { createTask } = useTask()
 const { fetchTags, tags: availableTags } = useTag()
