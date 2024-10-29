@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn
+      <BaseButton
         v-bind="activatorProps"
-        color="surface-variant"
         text="日付指定"
-        variant="flat"
         width="100"
       />
     </template>
@@ -71,6 +69,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '../BaseButton.vue'
+
 const { filterStartDate, filterEndDate } = useTask()
 
 const emit = defineEmits(['taskFetch'])

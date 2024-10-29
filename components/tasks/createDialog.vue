@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
   <template #activator="{ props: activatorProps }">
-    <v-btn
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="タスク追加"
-      variant="flat"
       size="large"
       @click="fetchTags"
     />
@@ -65,6 +63,7 @@ import { ref } from 'vue'
 import { useTask } from '~/composables/useTask'
 import { useTag } from '~/composables/useTag'
 import fileSelection from './fileSelection.vue'
+import BaseButton from '../BaseButton.vue'
 
 const { createTask } = useTask()
 const { fetchTags, tags: availableTags } = useTag()

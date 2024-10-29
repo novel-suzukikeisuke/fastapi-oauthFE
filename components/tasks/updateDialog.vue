@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn
+      <BaseButton
         v-bind="activatorProps"
         color="surface-variant"
         text="編集"

@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
   <template #activator="{ props: activatorProps }">
-    <v-btn
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="添付資料"
-      variant="flat"
       width="100"
     />
   </template>
@@ -31,6 +29,8 @@
 
 <script setup lang="ts">
 import { apiBaseUrl } from '~/config'
+import BaseButton from '../BaseButton.vue'
+
 const isActive = ref<boolean>(false)
 
 const props = defineProps<{

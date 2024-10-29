@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn
+      <BaseButton
         v-bind="activatorProps"
-        color="surface-variant"
         text="編集"
-        variant="flat"
       />
     </template>
 
@@ -65,6 +63,7 @@
 import { ref } from 'vue'
 import { useUser } from '~/composables/useUser'
 import { UserRole } from '~/constants/userRole'
+import BaseButton from '../BaseButton.vue'
 
 const { updateUser } = useUser()
 const { required, maxLength, minLength, validEmail } = validations()

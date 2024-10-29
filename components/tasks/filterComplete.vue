@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
   <template #activator="{ props: activatorProps }">
-    <v-btn
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="完了状態"
-      variant="flat"
       width="100"
     />
   </template>
@@ -36,6 +34,7 @@
 
 <script setup lang="ts">
 import { TaskCompleted } from '~/constants/taskCompleted'
+import BaseButton from '../BaseButton.vue'
 
 const { filterCompleted } = useTask()
 

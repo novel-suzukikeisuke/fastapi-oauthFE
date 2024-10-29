@@ -29,9 +29,7 @@
       <v-spacer />
       <v-col cols="12" md="2" sm="12" class="d-flex justify-end">
         <searchDialog @task-search="handleSearch" />
-      <v-btn
-        color="surface-variant"
-        variant="flat"
+      <BaseButton
         icon="mdi mdi-rotate-right"
         class="ms-2"
         @click="resetFilters"
@@ -97,13 +95,10 @@
           </v-card-text>
           <v-card-actions>
             <imgDialog :task />
-            <v-btn
-              color="surface-variant"
-              variant="flat"
+            <BaseButton
+              text="ダウンロード"
               @click="downloadFile(task.file_path.replace('uploads/', ''))"
-            >
-              ダウンロード
-            </v-btn>
+            />
             <v-spacer />
             <updateDialog :task="task" @task-fetch="fetchTasks" />
             <deleteDialog :task="task" @task-fetch="fetchTasks" />

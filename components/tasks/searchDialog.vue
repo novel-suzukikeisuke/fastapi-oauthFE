@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn
+      <BaseButton
         v-bind="activatorProps"
-        variant="flat"
         icon="mdi-magnify"
-        color="surface-variant"
       />
     </template>
 
@@ -39,6 +37,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import BaseButton from '../BaseButton.vue'
 
 const emit = defineEmits(['taskSearch'])
 

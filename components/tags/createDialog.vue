@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
   <template #activator="{ props: activatorProps }">
-    <v-btn
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="タグ追加"
-      variant="flat"
       size="large"
     />
   </template>
@@ -55,6 +53,7 @@
 import { ref } from 'vue'
 import { useTag } from '~/composables/useTag'
 import { TagColor } from '~/constants/tagColor'
+import BaseButton from '../BaseButton.vue'
 
 const { createTag } = useTag()
 const { required, maxLength } = validations()

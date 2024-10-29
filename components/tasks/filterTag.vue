@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
   <template #activator="{ props: activatorProps }">
-    <v-btn
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="タグ"
-      variant="flat"
       width="100"
       @click="fetchTags"
     />
@@ -36,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '../BaseButton.vue'
+
 const { fetchTags, tags } = useTag()
 const { filterTagId } = useTask()
 

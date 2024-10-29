@@ -1,11 +1,9 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
     <template #activator="{ props: activatorProps }">
-      <v-btn
+      <BaseButton
         v-bind="activatorProps"
-        color="surface-variant"
         text="削除"
-        variant="flat"
         class="mx-2"
       />
     </template>
@@ -37,6 +35,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTag } from '~/composables/useTag'
+import BaseButton from '../BaseButton.vue'
 
 const { deleteTag } = useTag()
 
