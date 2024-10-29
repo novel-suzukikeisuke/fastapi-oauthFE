@@ -57,6 +57,7 @@ import { useTag } from '~/composables/useTag'
 import { TagColor } from '~/constants/tagColor'
 
 const { updateTag } = useTag()
+const { required, maxLength } = validations()
 
 const props = defineProps<{
   tag: {
@@ -79,8 +80,8 @@ const valid = ref<boolean>(false) // フォームのバリデーション結果�
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
 const nameRules = [
-  (v: string) => !!v || 'タグ名を入力してください', // 空欄禁止
-  (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります', // 文字数制限
+  required('タグ名を入力してください'),
+  maxLength(10, 'タグ名は10文字以内である必要があります'),
 ]
 
 const _updateTag = async () => {

@@ -18,21 +18,21 @@
         <v-form v-model="valid">
           <v-text-field
             v-model="title"
-            :rules="[titleRules]"
+            :rules="titleRules"
             :counter="20"
             label="タイトル"
             prepend-icon="mdi mdi-pencil"
           />
           <v-text-field
             v-model="description"
-            :rules="[descriptionRules]"
+            :rules="descriptionRules"
             :counter="50"
             label="説明"
             prepend-icon="mdi mdi-book-open-variant-outline"
           />
           <v-select
             v-model="tags"
-            :rules="[tagsRules]"
+            :rules="tagsRules"
             :items="availableTags"
             label="関連タグ"
             item-title="name"
@@ -68,6 +68,7 @@ import fileSelection from './fileSelection.vue'
 
 const { createTask } = useTask()
 const { fetchTags, tags: availableTags } = useTag()
+const { required, requiredArray, maxLength } = validations()
 
 const emit = defineEmits(['taskFetch'])
 
@@ -78,13 +79,17 @@ const file = ref<File | null>(null) // アップロードファイルを管理�
 const isActive = ref<boolean>(false) // モーダルのアクティブ状態を管理
 const valid = ref<boolean>(false) // フォームのバリデーション結果を管理
 
-// バリデーションルール
-// v : 検証対象の値
-// v.length <= 50: vの長さを指定
-// false : バリデーションが失敗した場合エラーメッセージ表示
-const titleRules = (v: string) => (!!v && v.length <= 20) || 'タイトルは必須で、20文字以内である必要があります'
-const descriptionRules = (v: string) => (!!v && v.length <= 50) || '説明は必須で、50文字以内である必要があります'
-const tagsRules = (v: number[]) => v.length > 0 || '少なくとも1つのタグを選択してください'
+const titleRules = [
+  required('タイトルを入力してください'),
+  maxLength(20, 'タイトルは20文字以内である必要があります'),
+]
+const descriptionRules = [
+  required('説明を入力してください'),
+  maxLength(50, '説明は50文字以内である必要があります'),
+]
+const tagsRules = [
+  requiredArray('少なくとも1つのタグを選択してください'),
+]
 
 const _createTask = async () => {
   const success = await createTask(title.value, description.value, tags.value, file.value) // IDの配列を送信

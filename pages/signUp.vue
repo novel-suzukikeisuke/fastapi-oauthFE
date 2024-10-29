@@ -51,6 +51,7 @@
 import { ref } from 'vue'
 
 const { signUp } = useUser()
+const { required, maxLength, minLength, validEmail } = validations()
 
 definePageMeta({
   layout: 'auth',
@@ -61,26 +62,23 @@ const email = ref<string>('')
 const password = ref<string>('')
 const valid = ref<boolean>(false) // フォームのバリデーション結果を管理
 
-// メールアドレスの正規表現パターン
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
 const nameRules = [
-  (v: string) => !!v || 'ユーザー名を入力してください', // 空欄禁止
-  (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります', // 文字数制限
+  required('ユーザー名を入力してください'),
+  maxLength(20, 'ユーザー名は20文字以内である必要があります'),
 ]
 const emailRules = [
-  (v: string) => !!v || 'メールアドレスを入力してください', // 空欄禁止
-  (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります', // 文字数制限
-  (v: string) => emailPattern.test(v) || '正しいメールアドレスを入力してください',
+  required('メールアドレスを入力してください'),
+  maxLength(50, 'メールアドレスは50文字以内である必要があります'),
+  validEmail('正しいメールアドレスを入力してください'),
 ]
 const passwordRules = [
-  (v: string) => !!v || 'パスワードを入力してください', // 空欄禁止
-  (v: string) => v.length >= 4 || 'パスワードは4文字以上である必要があります', // 文字数制限
-  (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります', // 文字数制限
+  required('パスワードを入力してください'),
+  maxLength(10, 'パスワードは10文字以内である必要があります'),
+  minLength(4, 'パスワードは4文字以上である必要があります'),
 ]
 
 const _signUp = async () => {

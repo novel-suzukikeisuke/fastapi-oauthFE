@@ -80,6 +80,7 @@ import type { TagResponse } from '~/types/tag'
 
 const { updateTask } = useTask()
 const { fetchTags, tags: availableTags } = useTag()
+const { maxLength } = validations()
 
 const props = defineProps<{
   task: {
@@ -105,8 +106,8 @@ const valid = ref<boolean>(false) // フォームのバリデーション結果�
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
-const titleRules = (v: string) => v.length <= 20 || 'タイトルは20文字以内である必要があります'
-const descriptionRules = (v: string) => v.length <= 50 || '説明は50文字以内である必要があります'
+const titleRules = maxLength(20, 'タイトルは20文字以内である必要があります')
+const descriptionRules = maxLength(50, '説明は50文字以内である必要があります')
 
 const _updateTask = async () => {
   const success = await updateTask(props.task.id, title.value, description.value, completed.value, tags.value, file.value) // IDの配列を送信
