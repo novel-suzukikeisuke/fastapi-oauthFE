@@ -6,106 +6,14 @@
         <createDialog @task-fetch="fetchTasks" />
       </v-col>
     </v-row>
-    <v-row class="d-flex align-center">
-      <v-col cols="12" md="3" sm="12">
-        <v-card
-          variant="tonal"
-        >
-          <v-card-item>
-            <v-row>
-              <v-col cols="4" class="d-flex justify-center">
-                <tagFilter @task-fetch="handleTagFilter" />
-              </v-col>
-              <v-col cols="4" class="d-flex justify-center">
-                <completeFilter @task-fetch="handleCompleteFilter" />
-              </v-col>
-              <v-col cols="4" class="d-flex justify-center">
-                <dateFilter @task-fetch="handleDateFilter" />
-              </v-col>
-            </v-row>
-          </v-card-item>
-        </v-card>
-      </v-col>
-      <v-spacer />
-      <v-col cols="12" md="2" sm="12" class="d-flex justify-end">
-        <searchDialog @task-search="handleSearch" />
-      <BaseButton
-        icon="mdi mdi-rotate-right"
-        class="ms-2"
-        @click="resetFilters"
-      />
-    </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        v-for="task in tasks"
-        :key="task.id"
-        cols="4"
-      >
-        <v-card>
-          <v-card-title>
-            <span>{{ task.title }}</span>
-          </v-card-title>
-          <v-card-subtitle>
-            {{ task.description }}
-          </v-card-subtitle>
-          <v-card-text class="card-text">
-            <div class="mb-1">
-              <span>完了状態:</span>
-              <v-chip
-                v-if="task.completed === TaskCompleted.NOT_STARTED"
-                color="orange"
-                size="small"
-                class="ma-1"
-              >
-                未対応
-              </v-chip>
-              <v-chip
-                v-else-if="task.completed === TaskCompleted.IN_PROGRESS"
-                color="blue"
-                size="small"
-                class="ma-1"
-              >
-                処理中
-              </v-chip>
-              <v-chip
-                v-else-if="task.completed === TaskCompleted.COMPLETED"
-                color="green"
-                size="small"
-                class="ma-1"
-              >
-                完了
-              </v-chip>
-            </div>
-            <div>関連タグ:</div>
-            <v-chip
-              v-for="tag in task.tags"
-              :key="tag.id"
-              :color="
-                tag.color === TagColor.RED ? 'red' :
-                tag.color === TagColor.BLUE ? 'blue' :
-                tag.color === TagColor.YELLOW ? 'yellow' :
-                'default'
-              "
-              class="ma-1"
-            >
-              <v-icon icon="mdi-label" start/>
-              {{ tag.name }}
-            </v-chip>
-          </v-card-text>
-          <v-card-actions>
-            <imgDialog :task />
-            <BaseButton
-              text="ダウンロード"
-              @click="downloadFile(task.file_path.replace('uploads/', ''))"
-            />
-            <v-spacer />
-            <updateDialog :task="task" @task-fetch="fetchTasks" />
-            <deleteDialog :task="task" @task-fetch="fetchTasks" />
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <taskFilters
+      @tag-filter="handleTagFilter"
+      @complete-filter="handleCompleteFilter"
+      @date-filter="handleDateFilter"
+      @search="handleSearch"
+      @reset="resetFilters"
+    />
+    <taskCard :tasks="tasks" :fetch-tasks="fetchTasks" />
     <v-row v-if="showAllButton">
       <v-col class="d-flex justify-center">
         <v-btn @click="fetchAllTasks">もっと見る</v-btn>
@@ -124,19 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { TaskCompleted } from '~/constants/taskCompleted'
-import { TagColor } from '~/constants/tagColor'
 import createDialog from '~/components/tasks/createDialog.vue'
-import updateDialog from '~/components/tasks/updateDialog.vue'
-import deleteDialog from '~/components/tasks/deleteDialog.vue'
-import tagFilter from '~/components/tasks/filterTag.vue'
-import completeFilter from '~/components/tasks/filterComplete.vue'
-import dateFilter from '~/components/tasks/filterDate.vue'
-import searchDialog from '~/components/tasks/searchDialog.vue'
-import imgDialog from '~/components/tasks/imgDialog.vue'
-import BaseButton from '~/components/BaseButton.vue'
+import taskCard from '~/components/tasks/taskCard.vue'
+import taskFilters from '~/components/tasks/taskFilters.vue'
 
-const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks, downloadFile } = useTask()
+const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks } = useTask()
 
 const showAllButton = ref(true)
 const showPagination = ref(false)
