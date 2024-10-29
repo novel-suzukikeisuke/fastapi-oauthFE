@@ -5,3 +5,18 @@ export type TagResponse = {
   user_id: number
   detail?: string
 }
+
+export type CreateTagRequest = {
+  name: string
+  color: number
+}
+
+export type CreateTagRequest = {
+  name: string
+  color: number
+}
+
+export type UpdateTagRequest = {
+  name?: string
+  color: number
+}

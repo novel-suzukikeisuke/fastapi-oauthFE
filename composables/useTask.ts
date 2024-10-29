@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { apiBaseUrl } from '../config'
-import { useAuthStore } from '~/store/auth'
 import { TaskPagination } from '~/constants/taskPagination'
 import type { TaskResponse, PaginatedTasksResponse, SearchTasksRequest } from '~/types/task'
 
@@ -13,66 +12,33 @@ export const useTask = () => {
   const page = ref<number>(TaskPagination.DEFAULT_PAGE)
   const limit = ref<number>(TaskPagination.DEFAULT_LIMIT)
   const totalTasks = ref<number>(TaskPagination.TOTAL_TASK)
-  const authStore = useAuthStore()
 
   const createTask = async (title: string, description: string, tags: number[], file: File | null) => {
-    try {
-      const formData = new FormData()
-      formData.append('title', title)
-      formData.append('description', description)
-      formData.append('tags', JSON.stringify(tags)) // タグをJSON文字列として送信
-      if (file) {
-        formData.append('file', file) // ファイルを追加
-      }
-      const response = await fetch(`${apiBaseUrl}/api/task/create`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-        body: formData,
-      })
-      const data: TaskResponse = await response.json()
-      if (response.ok) {
-        return true
-      }
-      else {
-        alert(data.detail)
-        return false
-      }
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('description', description)
+    formData.append('tags', JSON.stringify(tags)) // タグをJSON文字列として送信
+    if (file) {
+      formData.append('file', file) // ファイルを追加
     }
-    catch {
-      alert('タスク登録中に不明なエラーが発生しました。')
-    }
+    const data = await apiFetch(`${apiBaseUrl}/api/task/create`, 'POST', formData)
+    return data !== null
   }
 
   const fetchTasks = async () => {
-    try {
-      // クエリパラメータを組み立て
-      const params = new URLSearchParams()
-      if (filterTagId.value !== null) params.append('tag_id', String(filterTagId.value))
-      if (filterCompleted.value !== null) params.append('completed', String(filterCompleted.value))
-      if (filterStartDate.value) params.append('start_date', filterStartDate.value.toISOString())
-      if (filterEndDate.value) params.append('end_date', filterEndDate.value.toISOString())
-      params.append('page', String(page.value))
-      params.append('limit', String(limit.value))
+    const params = new URLSearchParams()
+    if (filterTagId.value !== null) params.append('tag_id', String(filterTagId.value))
+    if (filterCompleted.value !== null) params.append('completed', String(filterCompleted.value))
+    if (filterStartDate.value) params.append('start_date', filterStartDate.value.toISOString())
+    if (filterEndDate.value) params.append('end_date', filterEndDate.value.toISOString())
+    params.append('page', String(page.value))
+    params.append('limit', String(limit.value))
 
-      const queryString = params.toString() ? `?${params.toString()}` : ''
-      const response = await fetch(`${apiBaseUrl}/api/tasks${queryString}`, {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-      })
-      const data: PaginatedTasksResponse = await response.json() // データを先に取得しておく
-      if (response.ok) {
-        tasks.value = data.tasks
-        totalTasks.value = data.total_tasks
-      }
-      else {
-        alert(data.detail)
-      }
-    }
-    catch {
-      alert('タスク一覧取得中に不明なエラーが発生しました。')
+    const queryString = params.toString() ? `?${params.toString()}` : ''
+    const data: PaginatedTasksResponse = await apiFetch(`${apiBaseUrl}/api/tasks${queryString}`, 'GET')
+    if (data) {
+      tasks.value = data.tasks // タスクを設定
+      totalTasks.value = data.total_tasks // 総タスク数を設定（必要に応じて）
     }
   }
 
@@ -90,106 +56,38 @@ export const useTask = () => {
   }
 
   const updateTask = async (taskId: number, title: string, description: string, completed: number, tags: number[], file: File | null) => {
-    try {
-      const formData = new FormData()
-      formData.append('title', title)
-      formData.append('description', description)
-      formData.append('completed', completed.toString())
-      formData.append('tags', JSON.stringify(tags)) // タグをJSON文字列として送信
-      if (file) {
-        formData.append('file', file) // ファイルを追加
-      }
-      const response = await fetch(`${apiBaseUrl}/api/task/update?task_id=${taskId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-        body: formData,
-      })
-      const data: TaskResponse = await response.json()
-      if (response.ok) {
-        return true
-      }
-      else {
-        alert(data.detail)
-        return false
-      }
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('description', description)
+    formData.append('completed', completed.toString())
+    formData.append('tags', JSON.stringify(tags)) // タグをJSON文字列として送信
+    if (file) {
+      formData.append('file', file) // ファイルを追加
     }
-    catch {
-      alert('タスク更新中に不明なエラーが発生しました。')
-    }
+    const data = await apiFetch(`${apiBaseUrl}/api/task/update?task_id=${taskId}`, 'PUT', formData)
+    return data !== null
   }
 
   const deleteTask = async (taskId: number) => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/task/delete?task_id=${taskId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      if (response.ok) {
-        return true
-      }
-      else {
-        const errorData = await response.json() // エラーデータを取得
-        alert(errorData.detail)
-        return false
-      }
-    }
-    catch {
-      alert('タスク削除中に不明なエラーが発生しました。')
-    }
+    const data = await apiFetch(`${apiBaseUrl}/api/task/delete?task_id=${taskId}`, 'DELETE')
+    return data !== null
   }
 
   const searchTasks = async (title: string, description: string) => {
-    try {
-      // リクエストボディを初期化
-      const body: SearchTasksRequest = {}
-      // 入力されている場合のみプロパティを追加
-      if (title) {
-        body.title = title
-      }
-      if (description) {
-        body.description = description
-      }
-      const response = await fetch(`${apiBaseUrl}/api/tasks/search`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      })
-      const data: TaskResponse[] = await response.json()
-      if (response.ok) {
-        tasks.value = data
-        return true
-      }
-      else {
-        alert(data[0]?.detail || 'タスクが存在しません')
-        return false
-      }
+    const body: SearchTasksRequest = {}
+    if (title) {
+      body.title = title
     }
-    catch {
-      alert('タスク検索中に不明なエラーが発生しました')
+    if (description) {
+      body.description = description
     }
+    const data = await apiFetch(`${apiBaseUrl}/api/tasks/search`, 'POST', body)
+    return tasks.value = data
   }
 
   const downloadFile = async (filename: string) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/task/download/${filename}`, {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-      })
-      // ステータスコードがOKかどうかを確認
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      // Blobオブジェクトを作成
-      const blob = await response.blob()
+      const blob = await apiFetch(`${apiBaseUrl}/api/task/download/${filename}`, 'GET', undefined, true)
       // ダウンロード用のURLを作成
       const url = window.URL.createObjectURL(blob)
       // aタグを作成してクリックをシミュレート
