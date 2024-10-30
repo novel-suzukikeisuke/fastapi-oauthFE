@@ -44,10 +44,15 @@
 import { UserRole } from '~/constants/userRole'
 import updateDialog from '~/components/users/updateDialog.vue'
 import disabledDialog from '~/components/users/disabledDialog.vue'
+import { useAuthStore } from '~/store/auth'
 
 const { users, fetchUsers } = useUser() // useUserフックからデータを取得
+const authStore = useAuthStore()
 
 onMounted(async () => {
-  await fetchUsers()
+  await authStore.loadToken()
+  if (authStore.token) {
+    await fetchUsers()
+  }
 })
 </script>
