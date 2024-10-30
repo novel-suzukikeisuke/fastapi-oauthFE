@@ -22,7 +22,7 @@
               label="タイトル"
               prepend-icon="mdi mdi-pencil"
             />
-            <v-text-field
+            <v-textarea
               v-model="description"
               :rules="[descriptionRules]"
               :counter="50"

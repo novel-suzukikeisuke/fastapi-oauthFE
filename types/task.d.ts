@@ -7,6 +7,7 @@ export type TaskResponse = {
   completed: number
   file_path: string
   user_id: number
+  created_at: Date
   tags: TagResponse[]
   detail?: string
 }
