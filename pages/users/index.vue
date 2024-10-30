@@ -31,8 +31,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <updateDialog :user="user" @userFetch="fetchUsers" />
-            <disabledDialog :user="user" @userFetch="fetchUsers" />
+            <updateDialog :user="user" @user-fetch="fetchUsers" />
+            <disabledDialog :user="user" @user-fetch="fetchUsers" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -41,17 +41,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useUser } from '~/composables/useUser';
-import updateDialog from '~/components/users/updateDialog.vue';
-import disabledDialog from '~/components/users/disabledDialog.vue';
-import { UserRole } from '~/constants/userRole';
+import { UserRole } from '~/constants/userRole'
+import updateDialog from '~/components/users/updateDialog.vue'
+import disabledDialog from '~/components/users/disabledDialog.vue'
 
-const { users, fetchUsers } = useUser(); // useUserフックからデータを取得
+const { users, fetchUsers } = useUser() // useUserフックからデータを取得
 
-// ページがマウントされたらユーザー情報を取得
-onMounted(fetchUsers);
+onMounted(async () => {
+  await fetchUsers()
+})
 </script>
-
-<style scoped>
-</style>

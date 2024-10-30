@@ -1,11 +1,11 @@
 <template>
   <v-card-item
     class="drop_area"
+    :class="{ enter: isEnter }"
     @dragenter="dragEnter"
     @dragleave="dragLeave"
     @drop.prevent="dropFile"
     @dragover.prevent
-    :class="{ enter: isEnter }"
   >
     <v-card-text
       v-if="!file"
@@ -21,50 +21,47 @@
       <span class="ml-2">{{ file?.name }}</span>
       <v-spacer />
       <v-btn
-        @click="removeFile"
         style="cursor: pointer;"
         color="red"
         icon="mdi mdi-close"
         density="compact"
         variant="outlined"
-      ></v-btn>
+        @click="removeFile"
+      />
     </v-card-text>
   </v-card-item>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const emit = defineEmits(['update:file']);
-const isEnter = ref<boolean>(false);
-const file = ref<File | null>(null);
+const emit = defineEmits(['update:file'])
+
+const isEnter = ref<boolean>(false)
+const file = ref<File | null>(null)
 
 // preventDefault: 新しいタブでファイルを開くデフォルトの動作を防ぐ
 // ファイルをドラッグしたときにクラスを変化させて.enterを呼び出す
 const dragEnter = (event: DragEvent) => {
-  event.preventDefault();
-  isEnter.value = true;
-};
-
+  event.preventDefault()
+  isEnter.value = true
+}
 // ファイルが枠外に出た時に.enterを適用させない
 const dragLeave = () => {
-  isEnter.value = false;
-};
-
+  isEnter.value = false
+}
 // event.dataTransfer.files: ファイル情報を取得することができる
 // ドロップしたファイルが2つ以上の場合に後から追加した 単一ファイルを格納する
 const dropFile = (event: DragEvent) => {
-  const files = event.dataTransfer?.files;
+  const files = event.dataTransfer?.files
   if (files && files.length > 0) {
-    file.value = files[0]; // 単一ファイルを格納
-    emit('update:file', file.value);
+    file.value = files[0] // 単一ファイルを格納
+    emit('update:file', file.value)
   }
-  isEnter.value = false; // ドロップ後にエリアの状態をリセット
-};
-
+  isEnter.value = false // ドロップ後にエリアの状態をリセット
+}
 // ファイルを削除する関数
 const removeFile = () => {
-  file.value = null; // ファイルをnullに設定して削除
-  emit('update:file', null);
+  file.value = null // ファイルをnullに設定して削除
+  emit('update:file', null)
 }
 </script>
 

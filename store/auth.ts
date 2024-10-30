@@ -1,27 +1,27 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: null as string | null,
-  }), //どういう役割をしているか
+  }), // どういう役割をしているか
   actions: {
     setToken(token: string) {
-      this.token = token;
+      this.token = token
       if (import.meta.client) {
-        localStorage.setItem('jwtToken', token);
+        localStorage.setItem('jwtToken', token)
       }
     },
     logout() {
-      this.token = null;
+      this.token = null
       if (import.meta.client) {
-        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('jwtToken')
       }
     },
     async loadToken() {
-      const token = localStorage.getItem('jwtToken');
+      const token = localStorage.getItem('jwtToken')
       if (token) {
-        this.token = token;
+        this.token = token
       }
     },
   },
-});
+})

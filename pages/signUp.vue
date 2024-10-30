@@ -5,21 +5,21 @@
   >
     <v-card-title class="text-h5">新規登録</v-card-title>
     <v-card-text>
-      <v-form @submit.prevent="_signUp" v-model="valid">
+      <v-form v-model="valid" @submit.prevent="_signUp">
         <v-text-field
           v-model="username"
           :rules="nameRules"
           :counter="20"
           label="ユーザーネーム"
           required
-        ></v-text-field>
+        />
         <v-text-field
           v-model="email"
           :rules="emailRules"
           :counter="50"
           label="メールアドレス"
           required
-        ></v-text-field>
+        />
         <v-text-field
           v-model="password"
           :rules="passwordRules"
@@ -27,7 +27,7 @@
           label="パスワード"
           type="password"
           required
-        ></v-text-field>
+        />
         <v-btn
           color="primary"
           type="submit"
@@ -48,45 +48,38 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-
-const { signUp } = useUser();
+const { signUp } = useUser()
+const { required, maxLength, minLength, validEmail } = validations()
 
 definePageMeta({
-  layout: "auth",
-});
+  layout: 'auth',
+})
 
-const username = ref<string>('');
-const email = ref<string>('');
-const password = ref<string>('');
-const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
-
-// メールアドレスの正規表現パターン
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const username = ref<string>('')
+const email = ref<string>('')
+const password = ref<string>('')
+const valid = ref<boolean>(false) // フォームのバリデーション結果を管理
 
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
 const nameRules = [
-  (v: string) => !!v || 'ユーザー名を入力してください',  // 空欄禁止
-  (v: string) => v.length <= 20 || 'ユーザー名は20文字以内である必要があります'  // 文字数制限
+  required('ユーザー名を入力してください'),
+  maxLength(20, 'ユーザー名は20文字以内である必要があります'),
 ]
 const emailRules = [
-  (v: string) => !!v || 'メールアドレスを入力してください',  // 空欄禁止
-  (v: string) => v.length <= 50 || 'メールアドレスは50文字以内である必要があります',  // 文字数制限
-  (v: string) => emailPattern.test(v) || '正しいメールアドレスを入力してください'
+  required('メールアドレスを入力してください'),
+  maxLength(50, 'メールアドレスは50文字以内である必要があります'),
+  validEmail('正しいメールアドレスを入力してください'),
 ]
 const passwordRules = [
-  (v: string) => !!v || 'パスワードを入力してください',  // 空欄禁止
-  (v: string) => v.length >= 4 || 'パスワードは4文字以上である必要があります',  // 文字数制限
-  (v: string) => v.length <= 10 || 'パスワードは10文字以内である必要があります'  // 文字数制限
+  required('パスワードを入力してください'),
+  maxLength(10, 'パスワードは10文字以内である必要があります'),
+  minLength(4, 'パスワードは4文字以上である必要があります'),
 ]
 
 const _signUp = async () => {
-  await signUp(username.value, email.value, password.value);
-};
+  await signUp(username.value, email.value, password.value)
+}
 </script>
-
-<style scoped>
-</style>

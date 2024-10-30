@@ -5,18 +5,18 @@
   >
     <v-card-title class="text-h5">ログイン</v-card-title>
     <v-card-text>
-      <v-form @submit.prevent="_login" v-model="valid">
+      <v-form v-model="valid" @submit.prevent="_login">
         <v-text-field
-          label="ユーザーネーム"
           v-model="username"
+          label="ユーザーネーム"
           required
-        ></v-text-field>
+        />
         <v-text-field
+          v-model="password"
           label="パスワード"
           type="password"
-          v-model="password"
           required
-        ></v-text-field>
+        />
         <v-btn
           color="primary"
           type="submit"
@@ -38,19 +38,16 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: "auth",
-});
+  layout: 'auth',
+})
 
-const { login } = useAuth();
+const { login } = useAuth()
 
-const username = ref<string>('');
-const password = ref<string>('');
-const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
+const username = ref<string>('')
+const password = ref<string>('')
+const valid = ref<boolean>(false) // フォームのバリデーション結果を管理
 
 const _login = async () => {
-  await login(username.value, password.value);
-};
+  await login(username.value, password.value)
+}
 </script>
-
-<style scoped>
-</style>

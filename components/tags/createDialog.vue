@@ -1,16 +1,14 @@
 <template>
   <v-dialog v-model="isActive" max-width="500">
-  <template v-slot:activator="{ props: activatorProps }">
-    <v-btn
+  <template #activator="{ props: activatorProps }">
+    <BaseButton
       v-bind="activatorProps"
-      color="surface-variant"
       text="タグ追加"
-      variant="flat"
       size="large"
-    ></v-btn>
+    />
   </template>
 
-  <template v-slot:default="{ isActive }">
+  <template #default="{ isActive }">
     <v-card>
       <v-card-title class="text-h5">タグ追加</v-card-title>
       <v-card-item>
@@ -20,7 +18,7 @@
             :rules="nameRules"
             :counter="10"
             label="タグ名"
-          ></v-text-field>
+          />
           <v-select
             v-model="color"
             label="色"
@@ -31,20 +29,20 @@
                 { title: 'blue', value: TagColor.BLUE },
                 { title: 'yellow', value: TagColor.YELLOW }
               ]"
-          ></v-select>
+          />
         </v-form>
       </v-card-item>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <v-btn
           text="保存"
-          @click="_createTag"
           :disabled="!valid"
-        ></v-btn>
+          @click="_createTag"
+        />
         <v-btn
           text="閉じる"
           @click="isActive.value = false"
-        ></v-btn>
+        />
       </v-card-actions>
     </v-card>
   </template>
@@ -52,37 +50,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useTag } from '~/composables/useTag';
-import { TagColor } from '~/constants/tagColor';
+import { TagColor } from '~/constants/tagColor'
 
-const { createTag } = useTag();
+const { createTag } = useTag()
+const { required, maxLength } = validations()
 
-const emit = defineEmits(['tagFetch']);
+const emit = defineEmits(['tagFetch'])
 
-const name = ref<string>('');
-const color = ref<number>(TagColor.RED);
-const isActive = ref<boolean>(false); // モーダルのアクティブ状態を管理
-const valid = ref<boolean>(false); // フォームのバリデーション結果を管理
+const name = ref<string>('')
+const color = ref<number>(TagColor.RED)
+const isActive = ref<boolean>(false) // モーダルのアクティブ状態を管理
+const valid = ref<boolean>(false) // フォームのバリデーション結果を管理
 
 // バリデーションルール
 // v : 検証対象の値
 // v.length <= 50: vの長さを指定
 // false : バリデーションが失敗した場合エラーメッセージ表示
 const nameRules = [
-  (v: string) => !!v || 'タグ名を入力してください',  // 空欄禁止
-  (v: string) => v.length <= 10 || 'タグ名は10文字以内である必要があります'  // 文字数制限
+  required('タグ名を入力してください'),
+  maxLength(10, 'タグ名は10文字以内である必要があります'),
 ]
 
 const _createTag = async () => {
-  const success = await createTag(name.value, color.value);
+  const success = await createTag(name.value, color.value)
   if (success) {
-    name.value = '';
-    isActive.value = false; // 更新が成功した場合にモーダルを閉じる
-    emit('tagFetch'); // 更新成功時にイベントを発火
+    name.value = ''
+    isActive.value = false // 更新が成功した場合にモーダルを閉じる
+    emit('tagFetch') // 更新成功時にイベントを発火
   }
-};
+}
 </script>
-
-<style scoped>
-</style>

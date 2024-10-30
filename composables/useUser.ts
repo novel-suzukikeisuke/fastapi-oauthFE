@@ -1,127 +1,39 @@
-import { ref } from 'vue';
-import { apiBaseUrl } from '../config';
-import { useAuthStore } from '~/store/auth';
-import type { UserResponse } from '~/types/user';
+import { apiBaseUrl } from '../config'
+import type { UserResponse, SignUpUserRequest, UpdateUserRequest, DisabledUserRequest } from '~/types/user'
 
 export const useUser = () => {
-  const user = ref<UserResponse>();
-  const users = ref<UserResponse[]>([]); // ユーザーリストを格納するref
-  const error = ref<string | null>(null); // エラーを格納するref
-  const authStore = useAuthStore();
+  const user = ref<UserResponse>()
+  const users = ref<UserResponse[]>([])
+
   const signUp = async (username: string, email: string, password: string) => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/signUp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password
-        })
-      })
-      const data: UserResponse = await response.json()
-      if (response.ok) {
-        navigateTo('/')
-      } else  {
-        alert(data.detail)
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
+    const body: SignUpUserRequest = { username, email, password }
+    const data = await apiFetch(`${apiBaseUrl}/api/signUp`, 'POST', body)
+    if (data !== null) {
+      navigateTo('/')
     }
+    return data !== null
   }
 
   const fetchUser = async () => {
-    if (!authStore.token) return null;
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/user`, {
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`
-        },
-      });
-      if (response.ok) {
-        user.value = await response.json();
-        return user.value;
-      } else {
-        console.error('Failed to fetch user:', response.statusText);
-        return null;
-      }
-    } catch (err) {
-      console.error('Error fetching user:', err);
-      return null;
-    }
-  };
+    const data = await apiFetch(`${apiBaseUrl}/api/user`, 'GET')
+    return user.value = data
+  }
 
   const fetchUsers = async () => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/users`, {
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`
-        },
-      });
-
-      if (response.ok) {
-        users.value = await response.json(); // ユーザー情報を取得
-      } else {
-        error.value = `エラー: ${response.status}`;
-      }
-    } catch (err) {
-      console.error('ユーザー情報の取得に失敗しました', err);
-      error.value = 'ユーザー情報の取得に失敗しました';
-    }
-  };
+    const data = await apiFetch(`${apiBaseUrl}/api/users`, 'GET')
+    return users.value = data
+  }
 
   const updateUser = async (userId: number, username: string, email: string, password: string, role: number) => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/user/update?user_id=${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-          role: role
-        })
-      })
-      const data: UserResponse = await response.json()
-      if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
-    }
+    const body: UpdateUserRequest = { username, email, password, role }
+    const data = await apiFetch(`${apiBaseUrl}/api/user/update?user_id=${userId}`, 'PUT', body)
+    return data !== null
   }
 
   const updateUserDisabled = async (userId: number, disabled: boolean) => {
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/users/disabled?user_id=${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${authStore.token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          disabled: disabled
-        })
-      })
-      const data: UserResponse = await response.json()
-      if (response.ok) {
-        return true;
-      } else  {
-        alert(data.detail)
-        return false;
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
-      return false;
-    }
+    const body: DisabledUserRequest = { disabled }
+    const data = await apiFetch(`${apiBaseUrl}/api/user/disabled?user_id=${userId}`, 'PUT', body)
+    return data !== null
   }
 
   return {
@@ -131,6 +43,6 @@ export const useUser = () => {
     updateUser,
     updateUserDisabled,
     users,
-    user
-  };
-};
+    user,
+  }
+}

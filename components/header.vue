@@ -10,7 +10,7 @@
       </v-tab>
     </v-tabs>
 
-    <v-spacer></v-spacer>
+    <v-spacer/>
 
     <v-menu offset-y>
       <template #activator="{ props }">
@@ -29,38 +29,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue';
-import { useAuth } from '~/composables/useAuth'; // useAuthをインポート
-import { UserRole } from '~/constants/userRole';
+import { UserRole } from '~/constants/userRole'
+
+const { logOut } = useAuth() // logOutを取得
 
 // propsを受け取る
 // user プロップを受け取る
 const props = defineProps<{
   user: {
-    id: number;
-    username: string;
-    email: string;
-    disabled: boolean;
-    role: number;
-  };
-}>();
-
-const { logOut } = useAuth(); // logOutを取得
+    id: number
+    username: string
+    email: string
+    disabled: boolean
+    role: number
+  }
+}>()
 
 // メニュー項目を定義
 const menuItems = ref([
   { name: 'タスク一覧', link: '/tasks' },
   { name: 'タグ一覧', link: '/tags' },
-  { name: 'ユーザー一覧', link: '/users', roleRequired: UserRole.ADMIN }
-]);
+  { name: 'ユーザー一覧', link: '/users', roleRequired: UserRole.ADMIN },
+])
 
 // user.roleに基づいてフィルタリングされたメニュー項目を取得
 const filteredMenuItems = computed(() => {
-  return menuItems.value.filter(menuItem => {
-    return !menuItem.roleRequired || props.user?.role === menuItem.roleRequired;
-  });
-});
+  return menuItems.value.filter((menuItem) => {
+    return !menuItem.roleRequired || props.user?.role === menuItem.roleRequired
+  })
+})
 </script>
-
-<style scoped>
-</style>
