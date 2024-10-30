@@ -9,7 +9,7 @@
         <v-card-title>
           <span>{{ task.title }}</span>
         </v-card-title>
-        <v-card-subtitle>
+        <v-card-subtitle class="text-pre-wrap">
           {{ task.description }}
         </v-card-subtitle>
         <v-card-text class="card-text">
