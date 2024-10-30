@@ -7,12 +7,19 @@
     >
       <v-card>
         <v-card-title>
-          <span>{{ task.title }}</span>
+          <div class="d-flex justify-space-between">
+            <span>{{ task.title }}</span>
+            <MenuButton :task="task" :fetch-tasks="fetchTasks" @task-fetch="fetchTasks"/>
+          </div>
         </v-card-title>
         <v-card-subtitle class="text-pre-wrap">
-          {{ task.description }}
+          <!-- substring(): 文字列を分割したり任意の箇所を抽出したりする関数 -->
+          {{ task.description.length > 20 ? task.description.substring(0, 20) + '...' : task.description }}
         </v-card-subtitle>
         <v-card-text class="card-text">
+          <v-img
+            :src="`${apiBaseUrl}/uploads/${task.file_path.replace('uploads/', '')}`"
+          />
           <div class="mb-1">
             <span>完了状態:</span>
             <v-chip
@@ -56,16 +63,6 @@
             {{ tag.name }}
           </v-chip>
         </v-card-text>
-        <v-card-actions>
-          <imgDialog :task />
-          <BaseButton
-            text="ダウンロード"
-            @click="downloadFile(task.file_path.replace('uploads/', ''))"
-          />
-          <v-spacer />
-          <updateDialog :task="task" @task-fetch="fetchTasks" />
-          <deleteDialog :task="task" @task-fetch="fetchTasks" />
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
@@ -74,12 +71,9 @@
 <script setup lang="ts">
 import { TaskCompleted } from '~/constants/taskCompleted'
 import { TagColor } from '~/constants/tagColor'
-import imgDialog from './imgDialog.vue'
-import updateDialog from './updateDialog.vue'
-import deleteDialog from './deleteDialog.vue'
+import MenuButton from './menuButton.vue'
+import { apiBaseUrl } from '~/config'
 import type { TagResponse } from '~/types/tag'
-
-const { downloadFile } = useTask()
 
 const props = defineProps<{
   tasks: Array<{

@@ -87,10 +87,3 @@ onUnmounted(() => {
   window.removeEventListener('resize', checkScreenSize)
 })
 </script>
-
-<style scoped>
-.card-text {
-  height: 150px;
-  overflow-y: auto;
-}
-</style>
