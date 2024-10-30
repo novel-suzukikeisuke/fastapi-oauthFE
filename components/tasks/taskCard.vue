@@ -62,6 +62,7 @@
             <v-icon icon="mdi-label" start/>
             {{ tag.name }}
           </v-chip>
+          <div>{{ toJapaneseDate(new Date(task.created_at)) }}</div>
         </v-card-text>
       </v-card>
     </v-col>
@@ -83,7 +84,18 @@ const props = defineProps<{
     completed: number
     tags: TagResponse[]
     file_path: string
+    created_at: string
   }>
   fetchTasks: () => void
 }>()
+
+// 日付を日本語形式でフォーマットする関数
+const toJapaneseDate = (date: Date | null): string => {
+  if (!date) return ''
+  const year = date.getFullYear() // 年の値を取得する
+  const month = date.getMonth() + 1 // 月は0から始まるため1を足す, 月の値を取得する
+  const day = date.getDate() // 日の値を取得する
+  return `${year}年${month}月${day}日`
+}
+
 </script>
