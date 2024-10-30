@@ -7,17 +7,13 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     setToken(token: string) {
       this.token = token
-      if (import.meta.client) {
-        localStorage.setItem('jwtToken', token)
-      }
+      localStorage.setItem('jwtToken', token)
     },
     logout() {
       this.token = null
-      if (import.meta.client) {
-        localStorage.removeItem('jwtToken')
-      }
+      localStorage.removeItem('jwtToken')
     },
-    async loadToken() {
+    loadToken() {
       const token = localStorage.getItem('jwtToken')
       if (token) {
         this.token = token
