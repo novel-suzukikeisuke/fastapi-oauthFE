@@ -13,9 +13,9 @@
           @click="downloadFile(task.file_path.replace('uploads/', ''))"
         />
       <div class="my-1"/>
-      <updateDialog :task="task" :fetch-tasks="fetchTasks" @task-fetch="fetchTasks"/>
+      <updateDialog :task="props.task" :fetch-tasks="fetchTasks" @task-fetch="fetchTasks"/>
       <div class="my-1"/>
-      <deleteDialog :task="task" :fetch-tasks="fetchTasks" @task-fetch="fetchTasks"/>
+      <deleteDialog :task="props.task" :fetch-tasks="fetchTasks" @task-fetch="fetchTasks"/>
     </v-list>
   </v-menu>
 </template>
