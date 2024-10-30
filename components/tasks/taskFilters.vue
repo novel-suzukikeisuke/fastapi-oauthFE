@@ -1,6 +1,6 @@
 <template>
   <v-row class="d-flex align-center">
-      <v-col cols="12" md="3" sm="12">
+      <v-col cols="12" md="auto">
         <v-card
           variant="tonal"
         >
