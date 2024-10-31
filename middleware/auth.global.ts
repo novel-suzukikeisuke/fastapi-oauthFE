@@ -16,23 +16,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   if (authStore.token) {
-    try {
-      const user = await fetchUser()
+    const user = await fetchUser()
 
-      // 認証済みのユーザーがNOT_AUTH_PAGESにアクセスした場合は/tasksにリダイレクト
-      if (NOT_AUTH_PAGES.includes(to.path)) {
-        return navigateTo('/tasks', { replace: true })
-      }
-
-      // ユーザーがADMINでない場合は/usersページへのアクセスを制限
-      if (user && to.path === '/users' && user.role !== UserRole.ADMIN) {
-        return navigateTo('/tasks', { replace: true })
-      }
+    // 認証済みのユーザーがNOT_AUTH_PAGESにアクセスした場合は/tasksにリダイレクト
+    if (NOT_AUTH_PAGES.includes(to.path)) {
+      return navigateTo('/tasks', { replace: true })
     }
-    catch {
-      // トークンが無効または取得に失敗した場合、トークンを削除してログインページへリダイレクト
-      authStore.logout()
-      return navigateTo('/', { replace: true })
+
+    // ユーザーがADMINでない場合は/usersページへのアクセスを制限
+    if (user && to.path === '/users' && user.role !== UserRole.ADMIN) {
+      return navigateTo('/tasks', { replace: true })
     }
   }
 })
