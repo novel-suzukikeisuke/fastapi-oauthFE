@@ -8,24 +8,24 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const NOT_AUTH_PAGES = ['/signUp', '/']
 
   // クライアントサイドのみでトークンをロード
-  if (import.meta.client) {
-    await authStore.loadToken()
+  await authStore.loadToken()
 
-    // トークンが存在しない場合はログインページへリダイレクト
-    if (!authStore.token && !NOT_AUTH_PAGES.includes(to.path)) {
-      setTimeout(() => {
-        return navigateTo('/', { replace: true })
-      }, 100) // 遷移後レイアウトが崩れるため100ms程度の遅延を追加
+  // トークンが存在しない場合はログインページへリダイレクト
+  if (!authStore.token && !NOT_AUTH_PAGES.includes(to.path)) {
+    return navigateTo('/', { replace: true })
+  }
+
+  if (authStore.token) {
+    const user = await fetchUser()
+
+    // 認証済みのユーザーがNOT_AUTH_PAGESにアクセスした場合は/tasksにリダイレクト
+    if (NOT_AUTH_PAGES.includes(to.path)) {
+      return navigateTo('/tasks', { replace: true })
     }
 
-    if (authStore.token) {
-      const user = await fetchUser()
-
-      if (user) {
-        if (to.path === '/users' && user.role !== UserRole.ADMIN) {
-          return navigateTo('/tasks')
-        }
-      }
+    // ユーザーがADMINでない場合は/usersページへのアクセスを制限
+    if (user && to.path === '/users' && user.role !== UserRole.ADMIN) {
+      return navigateTo('/tasks', { replace: true })
     }
   }
 })
