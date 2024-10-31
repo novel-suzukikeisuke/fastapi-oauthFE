@@ -35,10 +35,8 @@
 import createDialog from '~/components/tasks/createDialog.vue'
 import taskCard from '~/components/tasks/taskCard.vue'
 import taskFilters from '~/components/tasks/taskFilters.vue'
-import { useAuthStore } from '~/store/auth'
 
 const { tasks, totalTasks, page, limit, filterTagId, filterCompleted, filterStartDate, filterEndDate, fetchTasks, searchTasks, fetchAllTasks, fetchDefaultTasks } = useTask()
-const authStore = useAuthStore()
 
 const showAllButton = ref(true)
 const showPagination = ref(false)
@@ -80,12 +78,9 @@ const handleSearch = async ({ title, description }: { title: string, description
 }
 
 onMounted(async () => {
-  await authStore.loadToken()
-  if (authStore.token) {
-    checkScreenSize()
-    window.addEventListener('resize', checkScreenSize)
-    await fetchTasks()
-  }
+  checkScreenSize()
+  window.addEventListener('resize', checkScreenSize)
+  await fetchTasks()
 })
 
 onUnmounted(() => {

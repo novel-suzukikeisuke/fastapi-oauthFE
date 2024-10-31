@@ -14,16 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '~/store/auth'
-
 const { fetchUser, user } = useUser() // fetchUser と user を取得
-const authStore = useAuthStore()
 
 onMounted(async () => {
-  await authStore.loadToken()
-  if (authStore.token) {
-    await fetchUser() // コンポーネントがマウントされたときにユーザー情報を取得
-  }
+  await fetchUser() // コンポーネントがマウントされたときにユーザー情報を取得
 })
 </script>
 

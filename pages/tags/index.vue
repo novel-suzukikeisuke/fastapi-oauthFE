@@ -39,11 +39,9 @@ import { TagColor } from '~/constants/tagColor'
 import createDialog from '~/components/tags/createDialog.vue'
 import updateDialog from '~/components/tags/updateDialog.vue'
 import deleteDialog from '~/components/tags/deleteDialog.vue'
-import { useAuthStore } from '~/store/auth'
 
 // タグを取得
 const { tags, fetchTags } = useTag()
-const authStore = useAuthStore()
 
 const headers = [
   { title: 'タグ名', value: 'name' },
@@ -52,9 +50,6 @@ const headers = [
 ]
 
 onMounted(async () => {
-  await authStore.loadToken()
-  if (authStore.token) {
-    await fetchTags()
-  }
+  await fetchTags()
 })
 </script>
