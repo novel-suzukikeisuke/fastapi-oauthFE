@@ -7,16 +7,18 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     setToken(token: string) {
       this.token = token
-      localStorage.setItem('jwtToken', token)
+      const jwtCookie = useCookie('jwtToken')
+      jwtCookie.value = token
     },
     logout() {
       this.token = null
-      localStorage.removeItem('jwtToken')
+      const jwtCookie = useCookie('jwtToken')
+      jwtCookie.value = null
     },
     loadToken() {
-      const token = localStorage.getItem('jwtToken')
-      if (token) {
-        this.token = token
+      const jwtCookie = useCookie('jwtToken')
+      if (jwtCookie.value) {
+        this.token = jwtCookie.value
       }
     },
   },
